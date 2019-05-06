@@ -1,0 +1,50 @@
+{
+  "dist/react-window-grid.cjs.js": {
+    "bundled": 161,
+    "minified": 142,
+    "gzipped": 142
+  },
+  "dist/react-window-grid.umd.js": {
+    "bundled": 455,
+    "minified": 317,
+    "gzipped": 238
+  },
+  "dist/react-window-grid.esm.js": {
+    "bundled": 78,
+    "minified": 69,
+    "gzipped": 87,
+    "treeshaked": {
+      "rollup": {
+        "code": 47,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 998
+      }
+    }
+  },
+  "dist/index.cjs.js": {
+    "bundled": 298,
+    "minified": 244,
+    "gzipped": 189
+  },
+  "dist/index.umd.js": {
+    "bundled": 392,
+    "minified": 253,
+    "gzipped": 193
+  },
+  "dist/index.esm.js": {
+    "bundled": 104,
+    "minified": 98,
+    "gzipped": 101,
+    "treeshaked": {
+      "rollup": {
+        "code": 47,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 998
+      }
+    }
+  }
+}
