@@ -51,7 +51,7 @@ export default params => {
       commonjs(),
       json(),
       sizeSnapshot(),
-      production && terser()
+      (production || env === 'test') && terser()
     ]
   }
 }

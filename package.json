@@ -9,8 +9,10 @@
   "scripts": {
     "start": "rollup -c -w & webpack-dev-server",
     "build": "rollup -c --configEnv production",
-    "test": "node test/test.js",
-    "pretest": "npm run build"
+    "build:test": "rollup -c --configEnv test",
+    "test": "jest --bail --coverage --no-cache --testPathIgnorePatterns .history",
+    "pretest": "yarn build:test",
+    "test:report:coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "keywords": [
     "react",
@@ -28,9 +30,13 @@
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.5",
+    "coveralls": "^3.0.3",
+    "jest": "^24.8.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-test-renderer": "^16.8.6",
     "rollup": "^1.11.3",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-clear": "^2.0.7",

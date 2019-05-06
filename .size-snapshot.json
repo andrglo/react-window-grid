@@ -29,18 +29,18 @@
     "gzipped": 189
   },
   "dist/index.umd.js": {
-    "bundled": 392,
-    "minified": 253,
-    "gzipped": 193
+    "bundled": 528,
+    "minified": 336,
+    "gzipped": 244
   },
   "dist/index.esm.js": {
-    "bundled": 104,
-    "minified": 98,
-    "gzipped": 101,
+    "bundled": 145,
+    "minified": 132,
+    "gzipped": 125,
     "treeshaked": {
       "rollup": {
-        "code": 47,
-        "import_statements": 0
+        "code": 14,
+        "import_statements": 14
       },
       "webpack": {
         "code": 998
