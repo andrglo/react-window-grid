@@ -1,3 +1,10 @@
 import React from 'react'
+import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
-export default () => <div>Lets get started!</div>
+const ReactWindowGrid = props => {
+  return <div>
+    {`The scroll bar size is ${scrollbarSize(false)}`}
+  </div>
+}
+
+export default ReactWindowGrid

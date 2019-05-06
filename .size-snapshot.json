@@ -24,26 +24,26 @@
     }
   },
   "dist/index.cjs.js": {
-    "bundled": 298,
-    "minified": 244,
-    "gzipped": 189
+    "bundled": 1999,
+    "minified": 1330,
+    "gzipped": 559
   },
   "dist/index.umd.js": {
-    "bundled": 528,
-    "minified": 336,
-    "gzipped": 244
+    "bundled": 2278,
+    "minified": 1165,
+    "gzipped": 556
   },
   "dist/index.esm.js": {
-    "bundled": 145,
-    "minified": 132,
-    "gzipped": 125,
+    "bundled": 1846,
+    "minified": 1214,
+    "gzipped": 530,
     "treeshaked": {
       "rollup": {
-        "code": 14,
+        "code": 817,
         "import_statements": 14
       },
       "webpack": {
-        "code": 998
+        "code": 1801
       }
     }
   }

@@ -15,10 +15,10 @@ afterEach(() => {
   container = null
 })
 
-it('can render and update a counter', () => {
+it('can render', () => {
   act(() => {
     ReactDOM.render(<ReactWindowGrid />, container)
   })
   const div = container.querySelector('div')
-  expect(div.textContent).toBe('Lets get started!')
+  expect(div.textContent).toBe('The scroll bar size is 0')
 })

@@ -8,8 +8,6 @@ import {sizeSnapshot} from 'rollup-plugin-size-snapshot'
 import replace from 'rollup-plugin-replace'
 import pkg from './package.json'
 
-const external = id => !id.startsWith('.') && !id.startsWith('/')
-
 export default params => {
   let {configEnv: env} = params
   env = env || 'development'
@@ -35,7 +33,9 @@ export default params => {
   }
   return {
     input: './src/ReactWindowGrid.js',
-    external,
+    external: [
+      'react', 'react-dom', 'react-window'
+    ],
     output,
     plugins: [
       clear({
