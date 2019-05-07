@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+const webpack = require('webpack')
 
 module.exports = {
   entry: './src/dev/index.js',
@@ -7,9 +7,7 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     contentBase: './src/dev',
     hot: true
@@ -20,9 +18,9 @@ module.exports = {
         test: /\.js$/,
         exclude: [/node_modules/, /dist/],
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
         }
       }
     ]
   }
-};
+}

@@ -26,7 +26,8 @@ export default params => {
         name: 'ReactWindowGrid',
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM'
+          'react-dom': 'ReactDOM',
+          'react-window': 'ReactWindow'
         }
       }
     ]
@@ -50,7 +51,7 @@ export default params => {
       }),
       commonjs(),
       json(),
-      sizeSnapshot(),
+      production && sizeSnapshot(),
       (production || env === 'test') && terser()
     ]
   }
