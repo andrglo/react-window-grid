@@ -2,6 +2,7 @@ import React, {useState, useMemo, useLayoutEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import startCase from 'lodash.startcase'
+import useEventListener from '@use-it/event-listener'
 
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -76,7 +77,6 @@ LocaleSelect.propTypes = {
 }
 
 const useStyles = makeStyles(theme => {
-  console.log('theme', theme)
   return {
     root: {
       padding: theme.spacing(3)
@@ -92,7 +92,7 @@ const Demo = () => {
   const classes = useStyles()
   const [tableName, setTableName] = useState(tables[0])
   const [locale, setLocale] = useState('en')
-  const [numberOfRows, setNumberOfRows] = useState(10)
+  const [numberOfRows, setNumberOfRows] = useState(100)
   const [columns, recordset] = useMemo(() => {
     console.log(`generating ${numberOfRows} records`, tableName)
     faker.locale = locale
@@ -100,8 +100,7 @@ const Demo = () => {
     for (const columnName of db[tableName]) {
       columns.push({
         id: columnName,
-        label: startCase(columnName),
-        width: 100
+        label: startCase(columnName)
       })
     }
     const recordset = []
@@ -122,7 +121,9 @@ const Demo = () => {
       setPanelWidth(panel.current.offsetWidth)
     }
   })
-  console.log('render', {columns, recordset, panelWidth})
+  const [rowHeaderWidth, setRowHeaderWidth] = useState(50)
+  const [fontSize, setFontSize] = useState(16)
+  useEventListener('resize', () => setPanelWidth(0))
   return (
     <Paper className={classes.root}>
       <Grid container spacing={3}>
@@ -148,16 +149,37 @@ const Demo = () => {
             label="Rows"
             type="number"
             value={numberOfRows}
-            onChange={event => setNumberOfRows(event.target.value)}
+            onChange={event => setNumberOfRows(Number(event.target.value))}
+          />
+        </Grid>
+        <Grid item xs={4} sm={3}>
+          <TextField
+            label="Row header width"
+            type="number"
+            value={rowHeaderWidth}
+            onChange={event => setRowHeaderWidth(Number(event.target.value))}
+          />
+        </Grid>
+        <Grid item xs={3} sm={2}>
+          <TextField
+            label="Font size"
+            type="number"
+            value={fontSize}
+            onChange={event => setFontSize(Number(event.target.value))}
           />
         </Grid>
         <Grid item xs={12} ref={panel}>
           <ReactWindowGrid
+            style={{
+              fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize
+            }}
             className={classes.grid}
             height={window.innerHeight - 200}
             width={panelWidth}
             columns={columns}
             recordset={recordset}
+            rowHeaderWidth={rowHeaderWidth}
           />
         </Grid>
       </Grid>
