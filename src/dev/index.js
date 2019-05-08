@@ -82,6 +82,7 @@ const useStyles = makeStyles(theme => {
       padding: theme.spacing(3)
     },
     grid: {
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       backgroundColor: theme.palette.background.default,
       border: '1px solid black'
     }
@@ -171,7 +172,6 @@ const Demo = () => {
         <Grid item xs={12} ref={panel}>
           <ReactWindowGrid
             style={{
-              fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               fontSize
             }}
             className={classes.grid}

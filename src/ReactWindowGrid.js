@@ -147,7 +147,7 @@ RowHeader.propTypes = {
   width: PropTypes.number.isRequired,
   itemCount: PropTypes.number.isRequired,
   itemSize: PropTypes.func.isRequired,
-  render: PropTypes.func.isRequired,
+  render: PropTypes.func,
   overscanCount: PropTypes.number,
   pivot: PropTypes.object.isRequired,
   setPivot: PropTypes.func

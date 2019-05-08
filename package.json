@@ -8,6 +8,7 @@
   "browser": "dist/index.umd.js",
   "scripts": {
     "build": "NODE_ENV=production rollup -c",
+    "build:test": "NODE_ENV=test rollup -c",
     "build:dev": "rollup -c",
     "build:dev:watch": "rollup -c -w",
     "start": "webpack-dev-server",
@@ -46,6 +47,7 @@
     "eslint-plugin-react-hooks": "^1.6.0",
     "faker": "^4.1.0",
     "jest": "^24.8.0",
+    "jest-canvas-mock": "^2.0.0",
     "lodash.startcase": "^4.4.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -72,5 +74,10 @@
     "react-dom": "^16.8.6",
     "react-window": "^1.8.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "jest": {
+    "setupFiles": [
+      "jest-canvas-mock"
+    ]
+  }
 }
