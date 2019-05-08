@@ -3,32 +3,25 @@ import PropTypes from 'prop-types'
 import {VariableSizeList, VariableSizeGrid} from 'react-window'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
-const DEFAULT_WIDTH = 320
-const SPACING_UNIT = 8
-const COLUMN_WIDTH = 80
-const CHAR_WIDTH = 7
-const UPPER_CHAR_WIDTH = 12
-const CHAR_HEIGHT = 16
-const TOP_MARGIN = SPACING_UNIT
-const BOTTOM_MARGIN = SPACING_UNIT
-const ROW_HEIGHT = CHAR_HEIGHT + TOP_MARGIN + BOTTOM_MARGIN
-
-const NO_PIVOT = {rowIndex: -1, columnIndex: -1}
-const noop = () => {}
+const noPivot = {rowIndex: -1, columnIndex: -1}
+const flex = {
+  display: 'flex'
+}
 
 const renderColumnHeader = params => {
-  // console.log('renderColumnHeader', params)
   const {
     index,
     style,
-    data: {columns, render, pivot, setpivot}
+    data: {columns, render, pivot, setPivot}
   } = params
   const column = columns[index]
   return (
     <div
       style={style}
-      onMouseEnter={() => setpivot({rowIndex: -1, columnIndex: index})}
-      onMouseLeave={() => setpivot(NO_PIVOT)}
+      onMouseEnter={
+        setPivot && (() => setPivot({rowIndex: -1, columnIndex: index}))
+      }
+      onMouseLeave={setPivot && (() => setPivot(noPivot))}
     >
       {render
         ? render({
@@ -44,23 +37,21 @@ const renderColumnHeader = params => {
 }
 
 const ColumnHeader = props => {
-  // console.log('ColumnHeader', props)
   const {
     height,
     itemCount,
     itemSize,
     width,
     columns,
-    left = 0,
     render,
     headerRef,
     overscanCount,
     pivot,
-    setpivot,
+    setPivot,
+    style,
     ...rest
   } = props
   useLayoutEffect(() => {
-    // console.log('ColumnHeader useEffect', columns)
     headerRef.current.resetAfterIndex(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columns])
@@ -72,9 +63,9 @@ const ColumnHeader = props => {
       width={width}
       itemCount={itemCount}
       itemSize={itemSize}
-      itemData={{columns, render, pivot, setpivot}}
+      itemData={{columns, render, pivot, setPivot}}
       overscanCount={overscanCount}
-      style={{left, overflow: 'hidden'}}
+      style={{...style, overflow: 'hidden'}}
       {...rest}
     >
       {renderColumnHeader}
@@ -90,24 +81,25 @@ ColumnHeader.propTypes = {
   itemSize: PropTypes.func.isRequired,
   render: PropTypes.func,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  left: PropTypes.number,
   overscanCount: PropTypes.number,
   pivot: PropTypes.object.isRequired,
-  setpivot: PropTypes.func.isRequired
+  setPivot: PropTypes.func,
+  style: PropTypes.object.isRequired
 }
 
 const renderRowHeader = params => {
-  // console.log('renderRowHeader', params)
   const {
     index,
     style,
-    data: {render, pivot, setpivot}
+    data: {render, pivot, setPivot}
   } = params
   return (
     <div
       style={style}
-      onMouseEnter={() => setpivot({rowIndex: index, columnIndex: -1})}
-      onMouseLeave={() => setpivot(NO_PIVOT)}
+      onMouseEnter={
+        setPivot && (() => setPivot({rowIndex: index, columnIndex: -1}))
+      }
+      onMouseLeave={setPivot && (() => setPivot(noPivot))}
     >
       {render
         ? render({
@@ -120,7 +112,6 @@ const renderRowHeader = params => {
 }
 
 const RowHeader = props => {
-  // console.log('RowHeader', props)
   const {
     height,
     width,
@@ -130,7 +121,7 @@ const RowHeader = props => {
     rowHeaderRef,
     overscanCount,
     pivot,
-    setpivot,
+    setPivot,
     ...rest
   } = props
   return (
@@ -140,7 +131,7 @@ const RowHeader = props => {
       width={width}
       itemCount={itemCount}
       itemSize={itemSize}
-      itemData={{render, pivot, setpivot}}
+      itemData={{render, pivot, setPivot}}
       overscanCount={overscanCount}
       style={{overflow: 'hidden'}}
       {...rest}
@@ -159,42 +150,46 @@ RowHeader.propTypes = {
   render: PropTypes.func.isRequired,
   overscanCount: PropTypes.number,
   pivot: PropTypes.object.isRequired,
-  setpivot: PropTypes.func.isRequired
+  setPivot: PropTypes.func
 }
 
-const coalesce = (a, b) => (a === undefined ? b : a)
-
-const getColumnHeight = (value, column) => {
-  if (column.height) {
-    return column.height
+const calcColumnSize = (value, column, textContext) => {
+  let columnHeight = column.height
+  let columnWidth = column.width
+  if (columnHeight && columnWidth) {
+    return [columnHeight, columnWidth]
   }
-  if (
-    column.type === 'date' ||
-    column.type === 'number' ||
-    typeof value !== 'string'
-  ) {
-    return ROW_HEIGHT
+  if (!textContext) {
+    return [0, 0]
   }
-  const width = column.width || COLUMN_WIDTH
-  let valueWidth = 0
-  for (const char of value) {
-    if (char >= 'A' && char <= 'Z') {
-      valueWidth += UPPER_CHAR_WIDTH
-    } else {
-      valueWidth += CHAR_WIDTH
-    }
+  const text = String(value)
+  const metrics = textContext.measureText(
+    text.length > column.label.length ? text : column.label
+  )
+  const padding = 8
+  const valueWidth = metrics.width
+  const fontSize = parseFloat(textContext.font)
+  if (typeof value !== 'string') {
+    return [fontSize + padding, (columnWidth || valueWidth) + padding]
   }
-  const extraLines = Math.trunc(valueWidth / width)
-  // console.log('getColumnHeight', value, {valueWidth, extraLines}, 'height will be =>', ROW_HEIGHT + extraLines * CHAR_HEIGHT)
-  const height = ROW_HEIGHT + extraLines * CHAR_HEIGHT
-  if (column.maxHeight && height > column.maxHeight) {
-    return column.maxHeight
+  if (!columnWidth) {
+    const words = value.split(' ').length
+    columnWidth =
+      words > 5 /* A sentence?  */ ? Math.round(valueWidth / 2) : valueWidth
   }
-  return height
+  if (columnWidth >= valueWidth) {
+    return [fontSize, valueWidth + padding]
+  }
+  const lines = Math.round(valueWidth / columnWidth) - 1
+  columnHeight = lines * fontSize // approx.
+  if (column.maxHeight && columnHeight > column.maxHeight) {
+    return [column.maxHeight, columnWidth + padding]
+  }
+  const paddingBottom = padding + fontSize
+  return [columnHeight + paddingBottom, columnWidth + padding]
 }
 
 const renderCell = params => {
-  // console.log('renderCell', params)
   let {
     columnIndex,
     rowIndex,
@@ -207,7 +202,7 @@ const renderCell = params => {
       Footer,
       render,
       pivot,
-      setpivot
+      setPivot
     }
   } = params
   if (footerIndex === rowIndex) {
@@ -223,11 +218,14 @@ const renderCell = params => {
   }
   const record = recordset[rowIndex]
   const value = (record || {})[columns[columnIndex].id]
+  if (!render) {
+    style = {...style, overflow: 'hidden', textOverflow: 'ellipsis'}
+  }
   return (
     <div
       style={style}
-      onMouseEnter={() => setpivot({rowIndex, columnIndex})}
-      onMouseLeave={() => setpivot(NO_PIVOT)}
+      onMouseEnter={setPivot && (() => setPivot({rowIndex, columnIndex}))}
+      onMouseLeave={setPivot && (() => setPivot(noPivot))}
     >
       {render
         ? render({
@@ -244,18 +242,17 @@ const renderCell = params => {
 }
 
 const ReactWindowGrid = props => {
-  console.log('ReactWindowGrid', props)
   let {
     height,
-    width = DEFAULT_WIDTH,
+    width,
     recordset,
     footer: Footer,
     columns,
-    headerHeight = ROW_HEIGHT,
+    headerHeight,
     headerRenderer,
     cellRenderer,
     rowHeaderRenderer,
-    rowHeaderWidth,
+    rowHeaderWidth = 0,
     overscanColumnsCount,
     overscanRowsCount,
     headerProps,
@@ -265,29 +262,44 @@ const ReactWindowGrid = props => {
     gridRef,
     scrollToTopOnNewRecordset,
     borderHeight = 0,
-    disablePivot,
+    enablePivot,
     ...rest
   } = props
-  const [rowHeights, totalHeight] = useMemo(() => {
-    // console.log('row heights calc started')
+  const [font, setFont] = useState(0)
+  const [textContext, setTextContex] = useState(null)
+  useLayoutEffect(() => {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    context.font = font
+    setTextContex(context)
+  }, [font])
+  const [rowHeights, columnWidths, totalHeight] = useMemo(() => {
     const rowHeights = []
+    const columnWidths = []
     let totalHeight = 0
     for (const record of recordset) {
-      let rowHeight = 0
+      let recordRowHeight = 0
+      let i = 0
       for (const column of columns) {
         const value = record[column.id]
-        const columnHeight = getColumnHeight(value, column)
-        // console.log('getTotalHeight higher column', value, columnHeight, column)
-        if (columnHeight > rowHeight) {
-          rowHeight = columnHeight
+        const [columnHeight, columnWidth] = calcColumnSize(
+          value,
+          column,
+          textContext
+        )
+        if (columnHeight > recordRowHeight) {
+          recordRowHeight = columnHeight
         }
+        if (!columnWidths[i] || columnWidth > columnWidths[i]) {
+          columnWidths[i] = columnWidth
+        }
+        i++
       }
-      rowHeights.push(rowHeight)
-      totalHeight += rowHeight
+      rowHeights.push(recordRowHeight)
+      totalHeight += recordRowHeight
     }
-    // console.log('getRowHeights ended')
-    return [rowHeights, totalHeight]
-  }, [recordset, columns])
+    return [rowHeights, columnWidths, totalHeight]
+  }, [recordset, columns, textContext])
 
   const getRowHeight = i => rowHeights[i] || 0
   const mayBeRef = useRef(null)
@@ -298,66 +310,62 @@ const ReactWindowGrid = props => {
   const headerRef = useRef(null)
   const rowHeaderRef = useRef(null)
 
-  let [pivot, setpivot] = useState(NO_PIVOT)
-  if (disablePivot) {
-    pivot = NO_PIVOT
-    setpivot = noop
+  let [pivot, setPivot] = useState(noPivot)
+  if (!enablePivot) {
+    pivot = noPivot
+    setPivot = undefined
   }
 
   const onScroll = params => {
-    // console.log('onScroll', params)
     const {scrollLeft, scrollTop} = params
-    if (headerRef.current) {
-      // console.log('scrolling header')
-      headerRef.current.scrollTo(scrollLeft)
-    }
+    headerRef.current.scrollTo(scrollLeft)
     if (rowHeaderRef.current) {
       rowHeaderRef.current.scrollTo(scrollTop)
     }
   }
 
   useLayoutEffect(() => {
-    if (gridRef.current) {
-      // console.log('ReactWindowGrid useEffect 1', gridRef.current)
-      if (scrollToTopOnNewRecordset) {
-        gridRef.current.scrollTo({scrollLeft: 0, scrollTop: 0})
-      }
-      gridRef.current.resetAfterRowIndex(0)
-      if (rowHeaderRef.current) {
-        rowHeaderRef.current.resetAfterIndex(0)
-      }
+    if (scrollToTopOnNewRecordset) {
+      gridRef.current.scrollTo({scrollLeft: 0, scrollTop: 0})
+    }
+    gridRef.current.resetAfterRowIndex(0)
+    if (rowHeaderRef.current) {
+      rowHeaderRef.current.resetAfterIndex(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordset, rowHeights])
+  }, [recordset, rowHeights, columnWidths])
 
   const [finalWidth, setFinalWidth] = useState(0)
   const [hasVerticalScrollBar, setHasVerticalScrollBar] = useState(false)
   const [hasHorizontalScrollBar, setHasHorizontalScrollBar] = useState(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    if (outerRef.current) {
-      const hasHorizontal =
-        outerRef.current.scrollWidth > outerRef.current.offsetWidth
-      const hasVertical =
-        outerRef.current.scrollHeight > outerRef.current.offsetHeight
-      if (hasHorizontal !== hasHorizontalScrollBar) {
-        setHasHorizontalScrollBar(hasHorizontal)
-      }
-      if (hasVertical !== hasVerticalScrollBar) {
-        setHasVerticalScrollBar(hasVertical)
-      }
-      if (finalWidth !== outerRef.current.offsetWidth) {
-        setFinalWidth(outerRef.current.offsetWidth)
-      }
+    const hasHorizontal =
+      outerRef.current.scrollWidth > outerRef.current.offsetWidth
+    const hasVertical =
+      outerRef.current.scrollHeight > outerRef.current.offsetHeight
+    if (hasHorizontal !== hasHorizontalScrollBar) {
+      setHasHorizontalScrollBar(hasHorizontal)
     }
-  }, [hasHorizontalScrollBar, hasVerticalScrollBar, finalWidth])
+    if (hasVertical !== hasVerticalScrollBar) {
+      setHasVerticalScrollBar(hasVertical)
+    }
+    if (finalWidth !== outerRef.current.offsetWidth) {
+      setFinalWidth(outerRef.current.offsetWidth)
+    }
+    setFont(
+      window.getComputedStyle(outerRef.current, null).getPropertyValue('font')
+    )
+  })
 
   const footerIndex = Footer ? recordset.length : -1
   const rowCount = recordset.length + (Footer ? 1 : 0)
-  const hasRowHeader = rowHeaderRenderer || rowHeaderWidth > 0
-  rowHeaderWidth = hasRowHeader ? rowHeaderWidth || COLUMN_WIDTH : 0
+  const hasRowHeader = rowHeaderWidth > 0
   width -= rowHeaderWidth
   const columnsWidth = columns.reduce((w, c) => w + c.width, 0)
   let widthIsNotEnough = width < columnsWidth
+  headerHeight =
+    headerHeight || (textContext ? parseFloat(textContext.font) : 0)
   if (height === undefined) {
     height = headerHeight + totalHeight + borderHeight
     if (hasHorizontalScrollBar || widthIsNotEnough) {
@@ -373,38 +381,36 @@ const ReactWindowGrid = props => {
     }
   }
   useLayoutEffect(() => {
-    if (gridRef.current) {
-      // console.log('ReactWindowGrid useEffect 2', gridRef.current)
-      gridRef.current.resetAfterColumnIndex(0)
-    }
+    headerRef.current.resetAfterIndex(0)
+    gridRef.current.resetAfterColumnIndex(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columns, rowHeights])
-  const getColumnWidth = i =>
-    coalesce(columns[i] && columns[i].width, COLUMN_WIDTH)
+  }, [columns, rowHeights, columnWidths])
+  const getColumnWidth = i => columnWidths[i]
+  width =
+    width - (hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0)
   return (
     <div {...rest}>
-      <ColumnHeader
-        headerRef={headerRef}
-        height={headerHeight}
-        width={
-          width -
-          (hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0)
-        }
-        left={rowHeaderWidth}
-        itemCount={columns.length}
-        itemSize={getColumnWidth}
-        render={headerRenderer}
-        columns={columns}
-        overscanCount={overscanColumnsCount}
-        pivot={pivot}
-        setpivot={setpivot}
-        {...headerProps}
-      />
-      <div
-        style={{
-          display: 'flex'
-        }}
-      >
+      <div style={flex}>
+        {hasRowHeader && <div style={{width: rowHeaderWidth}} />}
+        <ColumnHeader
+          headerRef={headerRef}
+          height={headerHeight}
+          width={width}
+          itemCount={columns.length}
+          itemSize={getColumnWidth}
+          render={headerRenderer}
+          columns={columns}
+          overscanCount={overscanColumnsCount}
+          pivot={pivot}
+          setPivot={setPivot}
+          style={{
+            marginRight:
+              hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0
+          }}
+          {...headerProps}
+        />
+      </div>
+      <div style={flex}>
         {hasRowHeader && (
           <RowHeader
             rowHeaderRef={rowHeaderRef}
@@ -419,7 +425,7 @@ const ReactWindowGrid = props => {
             render={rowHeaderRenderer}
             overscanCount={overscanRowsCount}
             pivot={pivot}
-            setpivot={setpivot}
+            setPivot={setPivot}
             {...rowHeaderProps}
           />
         )}
@@ -444,7 +450,7 @@ const ReactWindowGrid = props => {
             columns,
             Footer,
             pivot,
-            setpivot,
+            setPivot,
             render: cellRenderer
           }}
           {...bodyProps}
@@ -477,7 +483,7 @@ ReactWindowGrid.propTypes = {
   gridRef: PropTypes.object,
   style: PropTypes.object,
   scrollToTopOnNewRecordset: PropTypes.bool,
-  disablePivot: PropTypes.bool
+  enablePivot: PropTypes.bool
 }
 
 export default ReactWindowGrid
