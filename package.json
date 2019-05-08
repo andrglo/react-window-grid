@@ -7,11 +7,10 @@
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
   "scripts": {
+    "build": "NODE_ENV=production rollup -c",
+    "build:dev": "rollup -c",
     "build:dev:watch": "rollup -c -w",
     "start": "webpack-dev-server",
-    "build": "rollup -c --configEnv production",
-    "build:test": "rollup -c --configEnv test",
-    "build:dev": "rollup -c",
     "test": "jest --bail --coverage --no-cache --testPathIgnorePatterns .history",
     "pretest": "yarn build:test",
     "test:report:coverage": "cat ./coverage/lcov.info | coveralls"
@@ -37,7 +36,9 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.5",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "coveralls": "^3.0.3",
+    "dom-helpers": "^3.4.0",
     "eslint": "^5.16.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-react": "^7.13.0",
@@ -45,6 +46,7 @@
     "faker": "^4.1.0",
     "jest": "^24.8.0",
     "lodash.startcase": "^4.4.0",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
@@ -69,8 +71,5 @@
     "react-dom": "^16.8.6",
     "react-window": "^1.8.1"
   },
-  "dependencies": {
-    "dom-helpers": "^3.4.0",
-    "prop-types": "^15.7.2"
-  }
+  "dependencies": {}
 }

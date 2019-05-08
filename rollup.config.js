@@ -8,9 +8,8 @@ import {sizeSnapshot} from 'rollup-plugin-size-snapshot'
 import replace from 'rollup-plugin-replace'
 import pkg from './package.json'
 
-export default params => {
-  let {configEnv: env} = params
-  env = env || 'development'
+export default () => {
+  const env = process.env.NODE_ENV || 'development'
   const production = env === 'production'
   console.log(`Building for ${env}\n`)
   const sourcemap = production
