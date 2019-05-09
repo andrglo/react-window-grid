@@ -18,6 +18,27 @@ import faker from 'faker'
 import ReactWindowGrid from '../..'
 import {db, locales} from './data'
 
+const tests = [ // copied from ../_tests_/index.js
+  [
+    'Auto calculate height and width',
+    {
+      id: 'test1',
+      height: 50,
+      width: 100,
+      columns: [
+        {id: 'column1', label: 'Column 1'},
+        {id: 'column2', label: 'Column 2'}
+      ],
+      recordset: [
+        {column1: 'cell l/c 1/1', column2: 'cell 1/2'},
+        {column1: 'cell 2/1', column2: 'cell 2/2'},
+        {column1: 'cell 3/1', column2: 'cell 3/2'}
+      ],
+      rowHeaderWidth: 10
+    }
+  ]
+]
+
 const tables = Object.keys(db)
 
 const TableSelect = props => {
@@ -175,13 +196,26 @@ const Demo = () => {
               fontSize
             }}
             className={classes.grid}
-            height={window.innerHeight - 200}
+            height={400}
             width={panelWidth}
             columns={columns}
             recordset={recordset}
             rowHeaderWidth={rowHeaderWidth}
           />
         </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h6" align="center">
+            ReactWindowGrid tests
+          </Typography>
+        </Grid>
+        {tests.map(([name, props]) => {
+          return (
+            <Grid key={name} item xs={12} sm={4}>
+              <Typography variant="headline">{name}</Typography>
+              <ReactWindowGrid style={{marginTop: 8}} {...props} />
+            </Grid>
+          )
+        })}
       </Grid>
     </Paper>
   )
