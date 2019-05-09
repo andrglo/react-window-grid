@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Auto calculate height and width 1`] = `
+<div>
+  <div
+    id="test1"
+  >
+    <div
+      style="display: flex;"
+    >
+      <div
+        style="width: 10px;"
+      />
+      <div
+        style="position: relative; height: 10px; width: 90px; overflow: hidden; will-change: transform; direction: ltr; margin-right: 0px;"
+      >
+        <div
+          style="height: 100%; width: 36px;"
+        >
+          <div
+            style="position: absolute; left: 0px; top: 0px; height: 100%; width: 20px;"
+          >
+            Column 1
+          </div>
+          <div
+            style="position: absolute; left: 20px; top: 0px; height: 100%; width: 16px;"
+          >
+            Column 2
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="display: flex;"
+    >
+      <div
+        style="position: relative; height: 40px; width: 10px; overflow: hidden; will-change: transform; direction: ltr;"
+      >
+        <div
+          style="height: 30px; width: 100%;"
+        >
+          <div
+            style="position: absolute; left: 0px; top: 0px; height: 10px; width: 100%;"
+          >
+            1
+          </div>
+          <div
+            style="position: absolute; left: 0px; top: 10px; height: 10px; width: 100%;"
+          >
+            2
+          </div>
+          <div
+            style="position: absolute; left: 0px; top: 20px; height: 10px; width: 100%;"
+          >
+            3
+          </div>
+        </div>
+      </div>
+      <div
+        style="position: relative; height: 40px; width: 90px; overflow: auto; will-change: transform; direction: ltr;"
+      >
+        <div
+          style="height: 30px; width: 36px;"
+        >
+          <div
+            style="position: absolute; left: 0px; top: 0px; height: 10px; width: 20px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            cell l/c 1/1
+          </div>
+          <div
+            style="position: absolute; left: 20px; top: 0px; height: 10px; width: 16px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            cell 1/2
+          </div>
+          <div
+            style="position: absolute; left: 0px; top: 10px; height: 10px; width: 20px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            cell 2/1
+          </div>
+          <div
+            style="position: absolute; left: 20px; top: 10px; height: 10px; width: 16px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            cell 2/2
+          </div>
+          <div
+            style="position: absolute; left: 0px; top: 20px; height: 10px; width: 20px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            cell 3/1
+          </div>
+          <div
+            style="position: absolute; left: 20px; top: 20px; height: 10px; width: 16px; overflow: hidden; text-overflow: ellipsis;"
+          >
+            cell 3/2
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

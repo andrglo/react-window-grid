@@ -52,7 +52,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-test-renderer": "^16.8.6",
+    "react-testing-library": "^7.0.0",
     "react-window": "^1.8.1",
     "rollup": "^1.11.3",
     "rollup-plugin-babel": "^4.3.2",
@@ -78,6 +78,9 @@
   "jest": {
     "setupFiles": [
       "jest-canvas-mock"
+    ],
+    "setupFilesAfterEnv": [
+      "react-testing-library/cleanup-after-each"
     ]
   }
 }
