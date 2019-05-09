@@ -12,21 +12,20 @@ export default () => {
   const env = process.env.NODE_ENV || 'development'
   const production = env === 'production'
   console.log(`Building for ${env}\n`)
-  const sourcemap = production
-  let output = [{file: pkg.main, format: 'cjs', sourcemap}]
+  let output = [{file: pkg.main, format: 'cjs'}]
   if (production) {
     output = [
       ...output,
-      {file: pkg.module, format: 'esm', sourcemap},
+      {file: pkg.module, format: 'esm'},
       {
         file: pkg.browser,
         format: 'umd',
-        sourcemap,
         name: 'ReactWindowGrid',
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'react-window': 'ReactWindow'
+          'react-window': 'ReactWindow',
+          'prop-types': 'PropTypes'
         }
       }
     ]
@@ -34,7 +33,7 @@ export default () => {
   return {
     input: './src/ReactWindowGrid.js',
     external: [
-      'react', 'react-dom', 'react-window'
+      'react', 'react-dom', 'react-window', 'prop-types'
     ],
     output,
     plugins: [
@@ -51,7 +50,7 @@ export default () => {
       commonjs(),
       json(),
       production && sizeSnapshot(),
-      (production || env === 'test') && terser()
+      production && terser()
     ]
   }
 }
