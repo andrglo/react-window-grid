@@ -242,6 +242,7 @@ const renderCell = params => {
 }
 
 const ReactWindowGrid = props => {
+  // console.log('ReactWindowGrid', props)
   let {
     height,
     width,
@@ -388,6 +389,8 @@ const ReactWindowGrid = props => {
   const getColumnWidth = i => columnWidths[i]
   width =
     width - (hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0)
+  const headerMarginRight =
+    hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0
   return (
     <div {...rest}>
       <div style={flex}>
@@ -395,7 +398,7 @@ const ReactWindowGrid = props => {
         <ColumnHeader
           headerRef={headerRef}
           height={headerHeight}
-          width={width}
+          width={width - headerMarginRight}
           itemCount={columns.length}
           itemSize={getColumnWidth}
           render={headerRenderer}
@@ -404,8 +407,7 @@ const ReactWindowGrid = props => {
           pivot={pivot}
           setPivot={setPivot}
           style={{
-            marginRight:
-              hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0
+            marginRight: headerMarginRight
           }}
           {...headerProps}
         />
@@ -483,7 +485,7 @@ ReactWindowGrid.propTypes = {
   gridRef: PropTypes.object,
   style: PropTypes.object,
   scrollToTopOnNewRecordset: PropTypes.bool,
-  enablePivot: PropTypes.bool
+  enablePivot: PropTypes.bool // too slow, avoid using
 }
 
 export default ReactWindowGrid
