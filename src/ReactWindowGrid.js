@@ -308,7 +308,7 @@ const ReactWindowGrid = props => {
   if (!gridRef) {
     gridRef = mayBeRef
   }
-  const outerRef = React.useRef(null)
+  const outerRef = useRef(null)
   const headerRef = useRef(null)
   const rowHeaderRef = useRef(null)
 
