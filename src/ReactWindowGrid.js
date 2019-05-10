@@ -171,7 +171,10 @@ const calcColumnSize = (value, column, textContext) => {
   const valueWidth = metrics.width
   const fontSize = parseFloat(textContext.font)
   if (typeof value !== 'string') {
-    return [fontSize + padding, (columnWidth || valueWidth) + padding]
+    return [
+      fontSize + padding,
+      column.width || (columnWidth || valueWidth) + padding
+    ]
   }
   if (!columnWidth) {
     const words = value.split(' ').length
@@ -179,15 +182,15 @@ const calcColumnSize = (value, column, textContext) => {
       words > 5 /* A sentence?  */ ? Math.round(valueWidth / 2) : valueWidth
   }
   if (columnWidth >= valueWidth) {
-    return [fontSize, valueWidth + padding]
+    return [fontSize, column.width || valueWidth + padding]
   }
   const lines = Math.round(valueWidth / columnWidth)
   columnHeight = lines * fontSize // approx.
   if (column.maxHeight && columnHeight > column.maxHeight) {
-    return [column.maxHeight, columnWidth + padding]
+    return [column.maxHeight, column.width || columnWidth + padding]
   }
   const paddingBottom = padding + fontSize
-  return [columnHeight + paddingBottom, columnWidth + padding]
+  return [columnHeight + paddingBottom, column.width || columnWidth + padding]
 }
 
 const renderCell = params => {
