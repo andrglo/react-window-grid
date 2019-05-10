@@ -181,7 +181,7 @@ const calcColumnSize = (value, column, textContext) => {
   if (columnWidth >= valueWidth) {
     return [fontSize, valueWidth + padding]
   }
-  const lines = Math.round(valueWidth / columnWidth) - 1
+  const lines = Math.round(valueWidth / columnWidth)
   columnHeight = lines * fontSize // approx.
   if (column.maxHeight && columnHeight > column.maxHeight) {
     return [column.maxHeight, columnWidth + padding]
