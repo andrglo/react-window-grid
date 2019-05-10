@@ -163,8 +163,9 @@ const calcColumnSize = (value, column, textContext) => {
     return [0, 0]
   }
   const text = String(value)
+  const label = column.label || ''
   const metrics = textContext.measureText(
-    text.length > column.label.length ? text : column.label
+    text.length > label.length ? text : column.label
   )
   const padding = 8
   const valueWidth = metrics.width
@@ -468,7 +469,14 @@ ReactWindowGrid.propTypes = {
   height: PropTypes.number,
   maxHeight: PropTypes.number,
   width: PropTypes.number.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      height: PropTypes.number,
+      width: PropTypes.number
+    }).isRequired
+  ).isRequired,
   recordset: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   footer: PropTypes.func,
   headerRenderer: PropTypes.func,
