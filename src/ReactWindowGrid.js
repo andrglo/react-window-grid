@@ -391,8 +391,6 @@ const ReactWindowGrid = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columns, rowHeights, columnWidths])
   const getColumnWidth = i => columnWidths[i]
-  width =
-    width - (hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0)
   const headerMarginRight =
     hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0
   return (
