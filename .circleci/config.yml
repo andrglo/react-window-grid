@@ -27,7 +27,7 @@ jobs:
           command: |
             yarn build
             yarn test
-            test:report:coverage
+            yarn test:report:coverage
       - persist_to_workspace:
           root: ~/repo
           paths: .
