@@ -1,50 +1,7 @@
 {
-  "dist/react-window-grid.cjs.js": {
-    "bundled": 161,
-    "minified": 142,
-    "gzipped": 142
-  },
-  "dist/react-window-grid.umd.js": {
-    "bundled": 455,
-    "minified": 317,
-    "gzipped": 238
-  },
-  "dist/react-window-grid.esm.js": {
-    "bundled": 78,
-    "minified": 69,
-    "gzipped": 87,
-    "treeshaked": {
-      "rollup": {
-        "code": 47,
-        "import_statements": 0
-      },
-      "webpack": {
-        "code": 998
-      }
-    }
-  },
-  "dist/index.cjs.js": {
-    "bundled": 13596,
-    "minified": 6779,
-    "gzipped": 2416
-  },
-  "dist/index.umd.js": {
-    "bundled": 14888,
-    "minified": 6117,
-    "gzipped": 2387
-  },
-  "dist/index.esm.js": {
-    "bundled": 13224,
-    "minified": 6439,
-    "gzipped": 2385,
-    "treeshaked": {
-      "rollup": {
-        "code": 857,
-        "import_statements": 54
-      },
-      "webpack": {
-        "code": 1907
-      }
-    }
+  "dist/react-window-grid.min.js": {
+    "bundled": 7726,
+    "minified": 7716,
+    "gzipped": 2829
   }
 }

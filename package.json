@@ -3,17 +3,12 @@
   "version": "0.1.0",
   "description": "A react grid with synced column and row headers",
   "repository": "https://github.com/andrglo/react-window-grid.git",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
-  "browser": "dist/index.umd.js",
+  "main": "src",
   "scripts": {
-    "build": "NODE_ENV=production rollup -c",
-    "build:test": "NODE_ENV=test rollup -c",
-    "build:dev": "rollup -c",
-    "build:dev:watch": "rollup -c -w",
+    "build": "rollup -c",
+    "build:dev": "rollup -c -w",
     "start": "webpack-dev-server",
     "test": "jest --bail --coverage --no-cache --testPathIgnorePatterns .history",
-    "pretest": "yarn build:test",
     "test:report:coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "keywords": [
@@ -49,14 +44,12 @@
     "jest": "^24.8.0",
     "jest-canvas-mock": "^2.0.0",
     "lodash.startcase": "^4.4.0",
-    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-testing-library": "^7.0.0",
     "react-window": "^1.8.1",
     "rollup": "^1.11.3",
     "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^4.2.3",
@@ -67,14 +60,20 @@
     "webpack-dev-server": "^3.3.1"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/*.js"
   ],
   "peerDependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-window": "^1.8.1"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-window": "^1.8.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "prop-types": "^15.7.2"
+  },
+  "engines": {
+    "node": ">8.0.0"
+  },
   "jest": {
     "setupFiles": [
       "jest-canvas-mock"
