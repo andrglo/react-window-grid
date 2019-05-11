@@ -282,7 +282,7 @@ const ReactWindowGrid = props => {
     const rowHeights = []
     const columnWidths = []
     let totalHeight = 0
-    for (const record of recordset) {
+    const calcColumnsSize = record => {
       let recordRowHeight = 0
       let i = 0
       for (const column of columns) {
@@ -302,6 +302,11 @@ const ReactWindowGrid = props => {
       }
       rowHeights.push(recordRowHeight)
       totalHeight += recordRowHeight
+    }
+    if (recordset.length) {
+      recordset.forEach(calcColumnsSize)
+    } else {
+      calcColumnsSize({})
     }
     return [rowHeights, columnWidths, totalHeight]
   }, [recordset, columns, textContext])
@@ -390,7 +395,7 @@ const ReactWindowGrid = props => {
     gridRef.current.resetAfterColumnIndex(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columns, rowHeights, columnWidths])
-  const getColumnWidth = i => columnWidths[i]
+  const getColumnWidth = i => columnWidths[i] || 0
   const headerMarginRight =
     hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0
   return (
