@@ -162,8 +162,8 @@ const calcColumnSize = (value, column, textContext) => {
   if (!textContext) {
     return [0, 0]
   }
-  const text = String(value)
-  const label = column.label || ''
+  const text = String(value || '')
+  const label = column.label || column.id
   const metrics = textContext.measureText(
     text.length > label.length ? text : column.label
   )
