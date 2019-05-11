@@ -98,3 +98,55 @@ exports[`Auto calculate height and width 1`] = `
   </div>
 </div>
 `;
+
+exports[`Case when recordset is empty use label or id to calc width 1`] = `
+<div>
+  <div
+    id="test1"
+  >
+    <div
+      style="display: flex;"
+    >
+      <div
+        style="width: 10px;"
+      />
+      <div
+        style="position: relative; height: 10px; width: 90px; overflow: hidden; will-change: transform; direction: ltr; margin-right: 0px;"
+      >
+        <div
+          style="height: 100%; width: 32px;"
+        >
+          <div
+            style="position: absolute; left: 0px; top: 0px; height: 100%; width: 16px;"
+          >
+            Column 1
+          </div>
+          <div
+            style="position: absolute; left: 16px; top: 0px; height: 100%; width: 16px;"
+          >
+            Column 2
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="display: flex;"
+    >
+      <div
+        style="position: relative; height: 40px; width: 10px; overflow: hidden; will-change: transform; direction: ltr;"
+      >
+        <div
+          style="height: 0px; width: 100%;"
+        />
+      </div>
+      <div
+        style="position: relative; height: 40px; width: 90px; overflow: auto; will-change: transform; direction: ltr;"
+      >
+        <div
+          style="height: 0px; width: 100px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

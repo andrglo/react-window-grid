@@ -36,6 +36,20 @@ const tests = [ // copied from ../_tests_/index.js
       ],
       rowHeaderWidth: 10
     }
+  ],
+  [
+    'Case when recordset is empty use label or id to calc width',
+    {
+      id: 'test1',
+      height: 50,
+      width: 100,
+      columns: [
+        {id: 'column1', label: 'Column 1'},
+        {id: 'column2', label: 'Column 2'}
+      ],
+      recordset: [],
+      rowHeaderWidth: 10
+    }
   ]
 ]
 
@@ -211,7 +225,7 @@ const Demo = () => {
         {tests.map(([name, props]) => {
           return (
             <Grid key={name} item xs={12} sm={4}>
-              <Typography variant="headline">{name}</Typography>
+              <Typography variant="caption">{name}</Typography>
               <ReactWindowGrid style={{marginTop: 8}} {...props} />
             </Grid>
           )
