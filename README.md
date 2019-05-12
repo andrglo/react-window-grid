@@ -19,11 +19,49 @@ npm install --save react-window
 
 ## Usage
 
-> todo
+```
+todo
+```
 
-## Documentation
+### Props
 
-> todo
+| Property | Type | Description |
+|:---|:---|:---|
+| __width__* | number | The grid total width |
+| __recordset__* | array of objects | The data to be displayed |
+| __columns__* | array of objects | See table bellow |
+| __height__ | number | The grid total height |
+| __maxHeight__ | number | Limits the maximum height |
+| __enablePivot__ | boolean | Default is false. Handle the mouse hover event, util for hightlighting the row/column that the user is focused |
+| __rowHeaderWidth__ | number | Default is zero. Show a left header for each row and define the width |
+| __cellRenderer__ | ({rowIndex: number, columnIndex: number,pivot: pivot object}) => ReactElement | Render a row header header. The pivot param, if pivot handling is enabled, informs the hovering row and column, see the pivot object props bellow. If not defined the record value will be showed |
+| __columnHeaderRenderer__ | ({columnIndex: number, pivot: pivot object}) => ReactElement | Render a column header. The pivot param, if pivot handling is enabled, informs the hovering row and column, see the pivot object props bellow. If not defined the column label or the column id will be showed |
+| __rowHeaderRenderer__ | ({rowIndex: number, pivot: pivot object}) => ReactElement | Render a row header header. The pivot param, if pivot handling is enabled, informs the hovering row and column, see the pivot object props bellow. If not defined the row sequence begining with1 will be showed |
+| __footerRenderer__ | () => ReactElement | Render a footer after the last row |
+| __columnHeaderHeight__ | number | Define the column header height. If not defined the current font size will be used|
+| __bodyProps__ | object | Additional props to be passed to the react-window [VariableSizeGrid](https://react-window.now.sh/#/api/VariableSizeGrid) that is the grid body |
+| __columnHeaderProps__ | object | Additional props to be passed to the react-window [VariableSizeList](https://react-window.now.sh/#/api/VariableSizeList) that is the grid header |
+| __rowHeaderProps__ | object | Additional props to be passed to the react-window [VariableSizeList](https://react-window.now.sh/#/api/VariableSizeList) that is the grid row header |
+
+
+### Column props
+
+| Property | Type | Default | Description |
+|:---|:---|:---|:---|
+| __id__* | string | The field name in the record object  |
+| __label__ | string | Label to be displayed in the header, if omitted the __id__ will be showed  |
+| __width__ | number | Cell width, if omitted will be calculated from the record field value or column label/id  |
+| __height__ | number | Cell height, if omitted will be calculated from the record field value or column label/id  |
+| __maxHeight__ | number | Cell height, when height is auto calculated it limits the maximum height |
+
+### Pivot object
+
+| Property | Type | Default | Description |
+|:---|:---|:---|:---|
+| __columnIndex__ | number | The column where the user is hovering  |
+| __rowIndexIndex__ | number | The column where the user is hovering  |
+
+*required
 
 ## How Does It Work?
 
