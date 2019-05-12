@@ -41,7 +41,6 @@ const ColumnHeader = props => {
     columns,
     render,
     headerRef,
-    overscanCount,
     pivot,
     setPivot,
     style,
@@ -60,7 +59,6 @@ const ColumnHeader = props => {
       itemCount={itemCount}
       itemSize={itemSize}
       itemData={{columns, render, pivot, setPivot}}
-      overscanCount={overscanCount}
       style={{...style, overflow: 'hidden'}}
       {...rest}
     >
@@ -77,7 +75,6 @@ ColumnHeader.propTypes = {
   itemSize: PropTypes.func.isRequired,
   render: PropTypes.func,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  overscanCount: PropTypes.number,
   pivot: PropTypes.object.isRequired,
   setPivot: PropTypes.func,
   style: PropTypes.object.isRequired
@@ -115,7 +112,6 @@ const RowHeader = props => {
     itemSize,
     render,
     rowHeaderRef,
-    overscanCount,
     pivot,
     setPivot,
     ...rest
@@ -128,7 +124,6 @@ const RowHeader = props => {
       itemCount={itemCount}
       itemSize={itemSize}
       itemData={{render, pivot, setPivot}}
-      overscanCount={overscanCount}
       style={{overflow: 'hidden'}}
       {...rest}
     >
@@ -144,7 +139,6 @@ RowHeader.propTypes = {
   itemCount: PropTypes.number.isRequired,
   itemSize: PropTypes.func.isRequired,
   render: PropTypes.func,
-  overscanCount: PropTypes.number,
   pivot: PropTypes.object.isRequired,
   setPivot: PropTypes.func
 }
@@ -252,8 +246,6 @@ const ReactWindowGrid = props => {
     cellRenderer,
     rowHeaderRenderer,
     rowHeaderWidth = 0,
-    overscanColumnsCount,
-    overscanRowsCount,
     columnHeaderProps,
     rowHeaderProps,
     bodyProps,
@@ -404,7 +396,6 @@ const ReactWindowGrid = props => {
           itemSize={getColumnWidth}
           render={columnHeaderRenderer}
           columns={columns}
-          overscanCount={overscanColumnsCount}
           pivot={pivot}
           setPivot={setPivot}
           style={{
@@ -426,7 +417,6 @@ const ReactWindowGrid = props => {
             itemCount={recordset.length}
             itemSize={getRowHeight}
             render={rowHeaderRenderer}
-            overscanCount={overscanRowsCount}
             pivot={pivot}
             setPivot={setPivot}
             {...rowHeaderProps}
@@ -442,8 +432,6 @@ const ReactWindowGrid = props => {
           columnCount={columns.length}
           columnWidth={getColumnWidth}
           onScroll={onScroll}
-          overscanColumnsCount={overscanColumnsCount}
-          overscanRowsCount={overscanRowsCount}
           itemData={{
             recordset,
             footerIndex,
@@ -485,8 +473,6 @@ ReactWindowGrid.propTypes = {
   rowHeaderWidth: PropTypes.number,
   columnHeaderHeight: PropTypes.number,
   borderHeight: PropTypes.number,
-  overscanColumnsCount: PropTypes.number,
-  overscanRowsCount: PropTypes.number,
   columnHeaderProps: PropTypes.object,
   rowHeaderProps: PropTypes.object,
   bodyProps: PropTypes.object,
