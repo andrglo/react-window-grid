@@ -14,7 +14,6 @@ const renderColumnHeader = params => {
     style,
     data: {columns, render, pivot, setPivot}
   } = params
-  const column = columns[index]
   return (
     <div
       style={style}
@@ -26,9 +25,6 @@ const renderColumnHeader = params => {
       {render
         ? render({
             columnIndex: index,
-            label: column.label,
-            id: column.id,
-            column,
             pivot
           })
         : columns[index].label || columns[index].id || ''}
@@ -220,9 +216,10 @@ const renderCell = params => {
     }
     return null
   }
-  const record = recordset[rowIndex]
-  const value = (record || {})[columns[columnIndex].id]
+  let value
   if (!render) {
+    const record = recordset[rowIndex]
+    value = (record || {})[columns[columnIndex].id]
     style = {...style, overflow: 'hidden', textOverflow: 'ellipsis'}
   }
   return (
@@ -233,12 +230,9 @@ const renderCell = params => {
     >
       {render
         ? render({
-            value,
             rowIndex,
             columnIndex,
-            record,
-            pivot,
-            column: columns[columnIndex]
+            pivot
           })
         : value || ''}
     </div>
@@ -251,16 +245,16 @@ const ReactWindowGrid = props => {
     height,
     width,
     recordset,
-    footer: Footer,
+    footerRenderer: Footer,
     columns,
-    headerHeight,
-    headerRenderer,
+    columnHeaderHeight,
+    columnHeaderRenderer,
     cellRenderer,
     rowHeaderRenderer,
     rowHeaderWidth = 0,
     overscanColumnsCount,
     overscanRowsCount,
-    headerProps,
+    columnHeaderProps,
     rowHeaderProps,
     bodyProps,
     maxHeight,
@@ -374,10 +368,10 @@ const ReactWindowGrid = props => {
   width -= rowHeaderWidth
   const columnsWidth = columns.reduce((w, c) => w + c.width, 0)
   let widthIsNotEnough = width < columnsWidth
-  headerHeight =
-    headerHeight || (textContext ? parseFloat(textContext.font) : 0)
+  columnHeaderHeight =
+    columnHeaderHeight || (textContext ? parseFloat(textContext.font) : 0)
   if (height === undefined) {
-    height = headerHeight + totalHeight + borderHeight
+    height = columnHeaderHeight + totalHeight + borderHeight
     if (hasHorizontalScrollBar || widthIsNotEnough) {
       height += scrollbarSize()
     }
@@ -404,11 +398,11 @@ const ReactWindowGrid = props => {
         {hasRowHeader && <div style={{width: rowHeaderWidth}} />}
         <ColumnHeader
           headerRef={headerRef}
-          height={headerHeight}
+          height={columnHeaderHeight}
           width={width - headerMarginRight}
           itemCount={columns.length}
           itemSize={getColumnWidth}
-          render={headerRenderer}
+          render={columnHeaderRenderer}
           columns={columns}
           overscanCount={overscanColumnsCount}
           pivot={pivot}
@@ -416,7 +410,7 @@ const ReactWindowGrid = props => {
           style={{
             marginRight: headerMarginRight
           }}
-          {...headerProps}
+          {...columnHeaderProps}
         />
       </div>
       <div style={flex}>
@@ -425,7 +419,7 @@ const ReactWindowGrid = props => {
             rowHeaderRef={rowHeaderRef}
             height={
               height -
-              headerHeight -
+              columnHeaderHeight -
               (hasHorizontalScrollBar || widthIsNotEnough ? scrollbarSize() : 0)
             }
             width={rowHeaderWidth}
@@ -441,7 +435,7 @@ const ReactWindowGrid = props => {
         <VariableSizeGrid
           ref={gridRef}
           outerRef={outerRef}
-          height={height - headerHeight + borderHeight}
+          height={height - columnHeaderHeight + borderHeight}
           width={width}
           rowCount={rowCount}
           rowHeight={getRowHeight}
@@ -484,16 +478,16 @@ ReactWindowGrid.propTypes = {
     }).isRequired
   ).isRequired,
   recordset: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  footer: PropTypes.func,
-  headerRenderer: PropTypes.func,
+  footerRenderer: PropTypes.func,
+  columnHeaderRenderer: PropTypes.func,
   cellRenderer: PropTypes.func,
   rowHeaderRenderer: PropTypes.func,
   rowHeaderWidth: PropTypes.number,
-  headerHeight: PropTypes.number,
+  columnHeaderHeight: PropTypes.number,
   borderHeight: PropTypes.number,
   overscanColumnsCount: PropTypes.number,
   overscanRowsCount: PropTypes.number,
-  headerProps: PropTypes.object,
+  columnHeaderProps: PropTypes.object,
   rowHeaderProps: PropTypes.object,
   bodyProps: PropTypes.object,
   gridRef: PropTypes.object,
