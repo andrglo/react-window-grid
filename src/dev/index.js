@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
-import {makeStyles} from '@material-ui/core/styles'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -18,7 +18,10 @@ import faker from 'faker'
 import ReactWindowGrid from '../..'
 import {db, locales} from './data'
 
-const tests = [ // copied from ../_tests_/index.js
+const border = 'solid 1px black'
+
+const tests = [
+  // copied from ../_tests_/index.js
   [
     'Auto calculate height and width',
     {
@@ -40,7 +43,7 @@ const tests = [ // copied from ../_tests_/index.js
   [
     'Case when recordset is empty use label or id to calc width',
     {
-      id: 'test1',
+      id: 'test2',
       height: 50,
       width: 100,
       columns: [
@@ -49,6 +52,86 @@ const tests = [ // copied from ../_tests_/index.js
       ],
       recordset: [],
       rowHeaderWidth: 10
+    }
+  ],
+  [
+    'Use customized render',
+    {
+      id: 'test3',
+      height: 100,
+      width: 200,
+      columns: [
+        {id: 'column1', label: 'Column 1'},
+        {id: 'column2', label: 'Column 2'},
+        {id: 'column3', label: 'Column 3'},
+        {id: 'column4', label: 'Column 4'},
+        {id: 'column5', label: 'Column 5'},
+        {id: 'column6', label: 'Column 6'}
+      ],
+      recordset: [
+        {
+          column1: 'cell 1/1',
+          column2: 'cell 1/2',
+          column3: 'cell 1/3',
+          column4: 'cell 1/4',
+          column5: 'cell 1/5',
+          column6: 'cell 1/6'
+        },
+        {
+          column1: 'cell 2/1',
+          column2: 'cell 2/2',
+          column3: 'cell 2/3',
+          column4: 'cell 2/4',
+          column5: 'cell 2/5',
+          column6: 'cell 2/6'
+        },
+        {
+          column1: 'cell 3/1',
+          column2: 'cell 3/2',
+          column3: 'cell 3/3',
+          column4: 'cell 3/4',
+          column5: 'cell 3/5',
+          column6: 'cell 3/6'
+        },
+        {
+          column1: 'cell 4/1',
+          column2: 'cell 4/2',
+          column3: 'cell 4/3',
+          column4: 'cell 4/4',
+          column5: 'cell 4/5',
+          column6: 'cell 4/6'
+        },
+        {
+          column1: 'cell 5/1',
+          column2: 'cell 5/2',
+          column3: 'cell 5/3',
+          column4: 'cell 5/4',
+          column5: 'cell 5/5',
+          column6: 'cell 5/6'
+        },
+        {
+          column1: 'cell 6/1',
+          column2: 'cell 6/2',
+          column3: 'cell 6/3',
+          column4: 'cell 6/4',
+          column5: 'cell 6/5',
+          column6: 'cell 6/6'
+        }
+      ],
+      rowHeaderWidth: 30,
+      columnHeaderRenderer: ({columnIndex, style}) => {
+        const column = tests[2][1].columns[columnIndex]
+        return <div style={style}>{column.label}</div>
+      },
+      rowHeaderRenderer: ({rowIndex, style}) => {
+        return <div style={style}>{rowIndex + 1}</div>
+      },
+      cellRenderer: ({rowIndex, columnIndex, style}) => {
+        const props = tests[2][1]
+        const column = props.columns[columnIndex]
+        const record = props.recordset[rowIndex]
+        return <div style={style}>{record[column.id]}</div>
+      }
     }
   ]
 ]
@@ -120,6 +203,21 @@ const useStyles = makeStyles(theme => {
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       backgroundColor: theme.palette.background.default,
       border: '1px solid black'
+    },
+    columnHeader: {
+      boxSizing: 'border-box',
+      borderTop: border,
+      borderRight: border,
+    },
+    rowHeader: {
+      boxSizing: 'border-box',
+      borderBottom: border,
+      borderLeft: border,
+    },
+    cell: {
+      boxSizing: 'border-box',
+      borderRight: border,
+      borderBottom: border,
     }
   }
 })
@@ -128,7 +226,7 @@ const Demo = () => {
   const classes = useStyles()
   const [tableName, setTableName] = useState(tables[0])
   const [locale, setLocale] = useState('en')
-  const [numberOfRows, setNumberOfRows] = useState(100)
+  const [numberOfRows, setNumberOfRows] = useState(50)
   const [columns, recordset] = useMemo(() => {
     console.log(`generating ${numberOfRows} records`, tableName)
     faker.locale = locale
@@ -151,10 +249,12 @@ const Demo = () => {
   }, [tableName, numberOfRows, locale])
   const panel = useRef(null)
   const [panelWidth, setPanelWidth] = useState(0)
+  const theme = useTheme()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    if (panel.current.offsetWidth !== panelWidth) {
-      setPanelWidth(panel.current.offsetWidth)
+    const availableWidth = panel.current.offsetWidth - 2 * theme.spacing(3)
+    if (availableWidth !== panelWidth) {
+      setPanelWidth(availableWidth)
     }
   })
   const [rowHeaderWidth, setRowHeaderWidth] = useState(50)
@@ -210,7 +310,7 @@ const Demo = () => {
               fontSize
             }}
             className={classes.grid}
-            height={400}
+            height={300}
             width={panelWidth}
             columns={columns}
             recordset={recordset}
@@ -222,14 +322,73 @@ const Demo = () => {
             ReactWindowGrid tests
           </Typography>
         </Grid>
-        {tests.map(([name, props]) => {
-          return (
-            <Grid key={name} item xs={12} sm={4}>
-              <Typography variant="caption">{name}</Typography>
-              <ReactWindowGrid style={{marginTop: 8}} {...props} />
-            </Grid>
-          )
-        })}
+        <Grid item xs={12} sm={4}>
+          <Typography variant="caption" align="center">
+            {tests[0][0]}
+          </Typography>
+          <ReactWindowGrid {...tests[0][1]} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography variant="caption" align="center">
+            {tests[1][0]}
+          </Typography>
+          <ReactWindowGrid {...tests[1][1]} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography variant="caption" align="center">
+            {tests[2][0]}
+          </Typography>
+          <ReactWindowGrid
+            {...tests[2][1]}
+            columnHeaderProps={{
+              style: {
+                boxSizing: 'border-box',
+                borderLeft: border,
+                borderRight: border
+              }
+            }}
+            bodyProps={{
+              style: {
+                boxSizing: 'border-box',
+                border
+                // borderLeft: border,
+                // borderTop: border,
+              }
+            }}
+            rowHeaderProps={{
+              style: {
+                borderTop: border,
+                boxSizing: 'border-box',
+                // borderBottom: border
+              }
+            }}
+            columnHeaderRenderer={({columnIndex, style}) => {
+              const column = tests[2][1].columns[columnIndex]
+              return (
+                <div style={style} className={classes.columnHeader}>
+                  {column.label}
+                </div>
+              )
+            }}
+            rowHeaderRenderer={({rowIndex, style}) => {
+              return (
+                <div style={style} className={classes.rowHeader}>
+                  {rowIndex + 1}
+                </div>
+              )
+            }}
+            cellRenderer={({rowIndex, columnIndex, style}) => {
+              const props = tests[2][1]
+              const column = props.columns[columnIndex]
+              const record = props.recordset[rowIndex]
+              return (
+                <div style={style} className={classes.cell}>
+                  {record[column.id]}
+                </div>
+              )
+            }}
+          />
+        </Grid>
       </Grid>
     </Paper>
   )
