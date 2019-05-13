@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {VariableSizeList, VariableSizeGrid} from 'react-window'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
-const noPivot = {rowIndex: -1, columnIndex: -1}
 const flex = {
   display: 'flex'
 }
@@ -12,21 +11,13 @@ const renderColumnHeader = params => {
   const {
     index,
     style,
-    data: {columns, render, pivot, setPivot}
+    data: {columns, render}
   } = params
   if (render) {
     return render({columnIndex: index, style})
   }
   return (
-    <div
-      style={style}
-      onMouseEnter={
-        setPivot && (() => setPivot({rowIndex: -1, columnIndex: index}))
-      }
-      onMouseLeave={setPivot && (() => setPivot(noPivot))}
-    >
-      {columns[index].label || columns[index].id || ''}
-    </div>
+    <div style={style}>{columns[index].label || columns[index].id || ''}</div>
   )
 }
 
@@ -39,8 +30,6 @@ const ColumnHeader = props => {
     columns,
     render,
     headerRef,
-    pivot,
-    setPivot,
     style = {},
     ...rest
   } = props
@@ -56,7 +45,7 @@ const ColumnHeader = props => {
       width={width}
       itemCount={itemCount}
       itemSize={itemSize}
-      itemData={{columns, render, pivot, setPivot}}
+      itemData={{columns, render}}
       style={{overflow: 'hidden', ...style}}
       {...rest}
     >
@@ -73,8 +62,6 @@ ColumnHeader.propTypes = {
   itemSize: PropTypes.func.isRequired,
   render: PropTypes.func,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  pivot: PropTypes.object.isRequired,
-  setPivot: PropTypes.func,
   style: PropTypes.object
 }
 
@@ -82,7 +69,7 @@ const renderRowHeader = params => {
   const {
     index,
     style,
-    data: {render, setPivot}
+    data: {render}
   } = params
   if (render) {
     return render({
@@ -90,17 +77,7 @@ const renderRowHeader = params => {
       style
     })
   }
-  return (
-    <div
-      style={style}
-      onMouseEnter={
-        setPivot && (() => setPivot({rowIndex: index, columnIndex: -1}))
-      }
-      onMouseLeave={setPivot && (() => setPivot(noPivot))}
-    >
-      {index + 1}
-    </div>
-  )
+  return <div style={style}>{index + 1}</div>
 }
 
 const RowHeader = props => {
@@ -111,8 +88,6 @@ const RowHeader = props => {
     itemSize,
     render,
     rowHeaderRef,
-    pivot,
-    setPivot,
     style = {},
     ...rest
   } = props
@@ -123,7 +98,7 @@ const RowHeader = props => {
       width={width}
       itemCount={itemCount}
       itemSize={itemSize}
-      itemData={{render, pivot, setPivot}}
+      itemData={{render}}
       style={{overflow: 'hidden', ...style}}
       {...rest}
     >
@@ -139,8 +114,6 @@ RowHeader.propTypes = {
   itemCount: PropTypes.number.isRequired,
   itemSize: PropTypes.func.isRequired,
   render: PropTypes.func,
-  pivot: PropTypes.object.isRequired,
-  setPivot: PropTypes.func,
   style: PropTypes.object
 }
 
@@ -189,16 +162,7 @@ const renderCell = params => {
     columnIndex,
     rowIndex,
     style,
-    data: {
-      recordset,
-      footerIndex,
-      width,
-      columns,
-      Footer,
-      render,
-      pivot,
-      setPivot
-    }
+    data: {recordset, footerIndex, width, columns, Footer, render}
   } = params
   if (footerIndex === rowIndex) {
     if (columnIndex === 0) {
@@ -223,21 +187,7 @@ const renderCell = params => {
       style
     })
   }
-  return (
-    <div
-      style={style}
-      onMouseEnter={setPivot && (() => setPivot({rowIndex, columnIndex}))}
-      onMouseLeave={setPivot && (() => setPivot(noPivot))}
-    >
-      {render
-        ? render({
-            rowIndex,
-            columnIndex,
-            pivot
-          })
-        : value || ''}
-    </div>
-  )
+  return <div style={style}>{value || ''}</div>
 }
 
 const ReactWindowGrid = props => {
@@ -259,7 +209,6 @@ const ReactWindowGrid = props => {
     maxHeight,
     gridRef,
     scrollToTopOnNewRecordset,
-    enablePivot,
     style = {},
     ...rest
   } = props
@@ -312,12 +261,6 @@ const ReactWindowGrid = props => {
   const outerRef = useRef(null)
   const headerRef = useRef(null)
   const rowHeaderRef = useRef(null)
-
-  let [pivot, setPivot] = useState(noPivot)
-  if (!enablePivot) {
-    pivot = noPivot
-    setPivot = undefined
-  }
 
   const onScroll = params => {
     const {scrollLeft, scrollTop} = params
@@ -415,8 +358,6 @@ const ReactWindowGrid = props => {
           itemSize={getColumnWidth}
           render={columnHeaderRenderer}
           columns={columns}
-          pivot={pivot}
-          setPivot={setPivot}
           {...columnHeaderProps}
         />
       </div>
@@ -429,8 +370,6 @@ const ReactWindowGrid = props => {
             itemCount={recordset.length}
             itemSize={getRowHeight}
             render={rowHeaderRenderer}
-            pivot={pivot}
-            setPivot={setPivot}
             {...rowHeaderProps}
           />
         )}
@@ -450,8 +389,6 @@ const ReactWindowGrid = props => {
             width: measuredWidth - headerMarginRight,
             columns,
             Footer,
-            pivot,
-            setPivot,
             render: cellRenderer
           }}
           {...bodyProps}
@@ -487,8 +424,7 @@ ReactWindowGrid.propTypes = {
   bodyProps: PropTypes.object,
   gridRef: PropTypes.object,
   style: PropTypes.object,
-  scrollToTopOnNewRecordset: PropTypes.bool,
-  enablePivot: PropTypes.bool // too slow, avoid using
+  scrollToTopOnNewRecordset: PropTypes.bool
 }
 
 export default ReactWindowGrid
