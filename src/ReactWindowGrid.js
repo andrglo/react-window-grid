@@ -359,9 +359,15 @@ const ReactWindowGrid = props => {
   const hasRowHeader = rowHeaderWidth > 0
   width -= rowHeaderWidth
   const columnsWidth = columns.reduce((w, c) => w + c.width, 0)
-  let widthIsNotEnough = width < columnsWidth
-  columnHeaderHeight =
-    columnHeaderHeight || (textContext ? parseFloat(textContext.font) : 0)
+  let widthIsNotEnough = gridWidth < columnsWidth
+  if (!columnHeaderHeight) {
+    if (textContext) {
+      const fontSize = parseFloat(textContext.font)
+      columnHeaderHeight = fontSize + fontSize / 4
+    } else {
+      columnHeaderHeight = 0
+    }
+  }
   if (height === undefined) {
     height = columnHeaderHeight + totalHeight + borderHeight
     if (hasHorizontalScrollBar || widthIsNotEnough) {
