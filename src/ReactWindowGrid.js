@@ -156,7 +156,7 @@ const calcColumnSize = ({
       (column.width || valueWidth) + columnHorizontalPadding
     ]
   }
-  const lines = 1 + Math.round(valueWidth / columnWidth)
+  const lines = Math.ceil(valueWidth / columnWidth)
   columnHeight = lines * lineHeight
   if (column.maxHeight && columnHeight > column.maxHeight) {
     return [
