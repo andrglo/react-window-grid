@@ -19,8 +19,31 @@ npm install --save react-window
 
 ## Usage
 
-```
-todo
+```javascript
+import ReactWindowGrid from '@andrglo/react-window-grid'
+
+const Grid = props => (
+  <ReactWindowGrid
+    height={300}
+    width={300}
+    columns={props.columns}
+    recordset={props.recordset}
+    rowHeaderWidth={50}
+  />
+)
+
+ReactDOM.render(
+  <Grid
+    columns={[
+      {id: 'column1', label: 'Column 1'},
+      {id: 'column2', label: 'Column 2'}
+    ]}
+    recordset={[
+      {column1: 'cell 1/1', column2: 'cell 1/2'},
+      {column1: 'cell 2/1', column2: 'cell 2/2'},
+      {column1: 'cell 3/1', column2: 'cell 3/2'}
+    ]}
+  />, document.getElementById('app'))
 ```
 
 ### Props
