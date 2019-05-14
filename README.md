@@ -37,11 +37,13 @@ todo
 | __columnHeaderRenderer__ | ({columnIndex: number}) => ReactElement | Render a column header.  If not defined the column label or the column id will be showed |
 | __rowHeaderRenderer__ | ({rowIndex: number}) => ReactElement | Render a row header header. If not defined the row sequence begining with1 will be showed |
 | __footerRenderer__ | () => ReactElement | Render a footer after the last row |
-| __columnHeaderHeight__ | number | Define the column header height. If not defined the current font size will be used|
+| __lineHeight__ | number | Define the line height. If not defined the current font size will be used|
+| __columnHeaderHeight__ | number | Define the column header height. If not defined __lineHeight__ will be used|
 | __bodyProps__ | object | Additional props to be passed to the react-window [VariableSizeGrid](https://react-window.now.sh/#/api/VariableSizeGrid) that is the grid body |
 | __columnHeaderProps__ | object | Additional props to be passed to the react-window [VariableSizeList](https://react-window.now.sh/#/api/VariableSizeList) that is the grid header |
 | __rowHeaderProps__ | object | Additional props to be passed to the react-window [VariableSizeList](https://react-window.now.sh/#/api/VariableSizeList) that is the grid row header |
-
+| __columnHorizontalPadding__ | number | Used to calculate column width. If not defined zero will be used |
+| __columnVerticalPadding__ | number | Used to calculate column height. If not defined zero will be used |
 
 ### Column props
 

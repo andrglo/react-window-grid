@@ -23,6 +23,7 @@ const tests = [
         {id: 'column1', label: 'Column 1'},
         {id: 'column2', label: 'Column 2'}
       ],
+      columnHorizontalPadding: 8,
       recordset: [
         {column1: 'cell l/c 1/1', column2: 'cell 1/2'},
         {column1: 'cell 2/1', column2: 'cell 2/2'},
@@ -41,6 +42,7 @@ const tests = [
         {id: 'column1', label: 'Column 1'},
         {id: 'column2', label: 'Column 2'}
       ],
+      columnHorizontalPadding: 8,
       recordset: [],
       rowHeaderWidth: 10
     }
@@ -49,7 +51,7 @@ const tests = [
     'Use customized render',
     {
       id: 'test3',
-      height: 100,
+      height: 500,
       width: 200,
       columns: [
         {id: 'column1', label: 'Column 1'},
@@ -59,6 +61,7 @@ const tests = [
         {id: 'column5', label: 'Column 5'},
         {id: 'column6', label: 'Column 6'}
       ],
+      columnHorizontalPadding: 8,
       recordset: [
         {
           column1: 'cell 1/1',
@@ -153,7 +156,7 @@ test(tests[0][0], async () => {
   expect(getStyle(cells[5])).toMatch(/width: 16px;/)
 
   const {height, ...rest} = props
-  rerender(<ReactWindowGrid {...rest} maxHeight={39} enablePivot />)
+  rerender(<ReactWindowGrid {...rest} maxHeight={39} />)
   cells = getAllByText(/^cell/)
   expect(cells.length).toBe(6)
   expect(getStyle(cells[0])).toMatch(/width: 20px;/)
@@ -184,7 +187,7 @@ test(tests[1][0], async () => {
   expect(cells).toBe(null)
 
   const {height, ...rest} = tests[0][1]
-  rerender(<ReactWindowGrid {...rest} maxHeight={39} enablePivot />)
+  rerender(<ReactWindowGrid {...rest} maxHeight={39} />)
   cells = getAllByText(/^cell/)
   expect(cells.length).toBe(6)
   expect(getStyle(cells[0])).toMatch(/width: 20px;/)
@@ -215,7 +218,7 @@ test(tests[2][0], async () => {
   expect(cells.length).toBe(36)
 
   const {height, ...rest} = tests[0][1]
-  rerender(<ReactWindowGrid {...rest} maxHeight={39} enablePivot />)
+  rerender(<ReactWindowGrid {...rest} maxHeight={39} />)
   cells = getAllByText(/^cell/)
   expect(cells.length).toBe(6)
   expect(getStyle(cells[0])).toMatch(/width: 20px;/)

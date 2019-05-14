@@ -117,7 +117,14 @@ RowHeader.propTypes = {
   style: PropTypes.object
 }
 
-const calcColumnSize = (value, column, textContext) => {
+const calcColumnSize = ({
+  value,
+  column,
+  lineHeight,
+  columnHorizontalPadding,
+  columnVerticalPadding,
+  textContext
+}) => {
   let columnHeight = column.height
   let columnWidth = column.width
   if (columnHeight && columnWidth) {
@@ -127,17 +134,15 @@ const calcColumnSize = (value, column, textContext) => {
     return [0, 0]
   }
   const text = String(value || '')
-  const label = column.label || column.id
+  const label = !columnWidth ? column.label || column.id : ''
   const metrics = textContext.measureText(
-    text.length > label.length ? text : column.label
+    text.length > label.length ? text : label
   )
-  const padding = 8
   const valueWidth = metrics.width
-  const fontSize = parseFloat(textContext.font)
   if (typeof value !== 'string') {
     return [
-      fontSize + padding,
-      column.width || (columnWidth || valueWidth) + padding
+      lineHeight + columnVerticalPadding,
+      column.width || (columnWidth || valueWidth) + columnHorizontalPadding
     ]
   }
   if (!columnWidth) {
@@ -145,16 +150,24 @@ const calcColumnSize = (value, column, textContext) => {
     columnWidth =
       words > 5 /* A sentence?  */ ? Math.round(valueWidth / 2) : valueWidth
   }
-  if (columnWidth >= valueWidth) {
-    return [fontSize, column.width || valueWidth + padding]
+  if (columnWidth >= valueWidth + columnVerticalPadding) {
+    return [
+      lineHeight + columnVerticalPadding,
+      column.width || valueWidth + columnHorizontalPadding
+    ]
   }
-  const lines = Math.round(valueWidth / columnWidth)
-  columnHeight = lines * fontSize // approx.
+  const lines = 1 + Math.round(valueWidth / columnWidth)
+  columnHeight = lines * lineHeight
   if (column.maxHeight && columnHeight > column.maxHeight) {
-    return [column.maxHeight, column.width || columnWidth + padding]
+    return [
+      column.maxHeight,
+      column.width || columnWidth + columnHorizontalPadding
+    ]
   }
-  const paddingBottom = padding + fontSize
-  return [columnHeight + paddingBottom, column.width || columnWidth + padding]
+  return [
+    columnHeight + columnVerticalPadding,
+    column.width || columnWidth + columnHorizontalPadding
+  ]
 }
 
 const renderCell = params => {
@@ -209,7 +222,10 @@ const ReactWindowGrid = props => {
     maxHeight,
     gridRef,
     scrollToTopOnNewRecordset,
+    lineHeight,
     style = {},
+    columnHorizontalPadding,
+    columnVerticalPadding,
     ...rest
   } = props
   const [font, setFont] = useState(0)
@@ -219,7 +235,20 @@ const ReactWindowGrid = props => {
     const context = canvas.getContext('2d')
     context.font = font
     setTextContex(context)
-  }, [font])
+  }, [font, columns])
+
+  if (!lineHeight && textContext) {
+    const fontSize = parseFloat(textContext.font)
+    lineHeight = fontSize + fontSize / 4
+  }
+  if (!columnHeaderHeight) {
+    if (lineHeight) {
+      columnHeaderHeight = lineHeight
+    } else {
+      columnHeaderHeight = 0
+    }
+  }
+
   const [rowHeights, columnWidths, totalHeight] = useMemo(() => {
     const rowHeights = []
     const columnWidths = []
@@ -229,11 +258,14 @@ const ReactWindowGrid = props => {
       let i = 0
       for (const column of columns) {
         const value = record[column.id]
-        const [columnHeight, columnWidth] = calcColumnSize(
+        const [columnHeight, columnWidth] = calcColumnSize({
           value,
           column,
+          lineHeight,
+          columnHorizontalPadding,
+          columnVerticalPadding,
           textContext
-        )
+        })
         if (columnHeight > recordRowHeight) {
           recordRowHeight = columnHeight
         }
@@ -251,14 +283,21 @@ const ReactWindowGrid = props => {
       calcColumnsSize({})
     }
     return [rowHeights, columnWidths, totalHeight]
-  }, [recordset, columns, textContext])
+  }, [
+    recordset,
+    columns,
+    lineHeight,
+    columnHorizontalPadding,
+    columnVerticalPadding,
+    textContext
+  ])
 
   const getRowHeight = i => rowHeights[i] || 0
   const mayBeRef = useRef(null)
   if (!gridRef) {
     gridRef = mayBeRef
   }
-  const outerRef = useRef(null)
+  const innerRef = useRef(null)
   const headerRef = useRef(null)
   const rowHeaderRef = useRef(null)
 
@@ -287,20 +326,20 @@ const ReactWindowGrid = props => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     const hasHorizontal =
-      outerRef.current.scrollWidth > outerRef.current.offsetWidth
+      innerRef.current.scrollWidth > innerRef.current.offsetWidth
     const hasVertical =
-      outerRef.current.scrollHeight > outerRef.current.offsetHeight
+      innerRef.current.scrollHeight > innerRef.current.offsetHeight
     if (hasHorizontal !== hasHorizontalScrollBar) {
       setHasHorizontalScrollBar(hasHorizontal)
     }
     if (hasVertical !== hasVerticalScrollBar) {
       setHasVerticalScrollBar(hasVertical)
     }
-    if (measuredWidth !== outerRef.current.offsetWidth) {
-      setMeasuredWidth(outerRef.current.offsetWidth)
+    if (measuredWidth !== innerRef.current.offsetWidth) {
+      setMeasuredWidth(innerRef.current.offsetWidth)
     }
     setFont(
-      window.getComputedStyle(outerRef.current, null).getPropertyValue('font')
+      window.getComputedStyle(innerRef.current, null).getPropertyValue('font')
     )
   })
 
@@ -310,21 +349,13 @@ const ReactWindowGrid = props => {
   const gridWidth = width - rowHeaderWidth
   const columnsWidth = columnWidths.reduce((w, width) => w + width, 0)
   let widthIsNotEnough = gridWidth < columnsWidth
-  if (!columnHeaderHeight) {
-    if (textContext) {
-      const fontSize = parseFloat(textContext.font)
-      columnHeaderHeight = fontSize + fontSize / 4
-    } else {
-      columnHeaderHeight = 0
-    }
-  }
   let requiredHeight = columnHeaderHeight + totalHeight
   if (hasHorizontalScrollBar || widthIsNotEnough) {
     requiredHeight += scrollbarSize()
   }
   let heightIsNotEnough
   if (height === undefined) {
-    height = requiredHeight
+    height = requiredHeight + 4 /* padding case when using borders */
   } else {
     heightIsNotEnough = requiredHeight > height
   }
@@ -375,7 +406,7 @@ const ReactWindowGrid = props => {
         )}
         <VariableSizeGrid
           ref={gridRef}
-          innerRef={outerRef}
+          innerRef={innerRef}
           height={height - columnHeaderHeight}
           width={gridWidth}
           rowCount={rowCount}
@@ -418,6 +449,9 @@ ReactWindowGrid.propTypes = {
   cellRenderer: PropTypes.func,
   rowHeaderRenderer: PropTypes.func,
   rowHeaderWidth: PropTypes.number,
+  lineHeight: PropTypes.number,
+  columnHorizontalPadding: PropTypes.number,
+  columnVerticalPadding: PropTypes.number,
   columnHeaderHeight: PropTypes.number,
   columnHeaderProps: PropTypes.object,
   rowHeaderProps: PropTypes.object,
@@ -425,6 +459,11 @@ ReactWindowGrid.propTypes = {
   gridRef: PropTypes.object,
   style: PropTypes.object,
   scrollToTopOnNewRecordset: PropTypes.bool
+}
+
+ReactWindowGrid.defaultProps = {
+  columnHorizontalPadding: 0,
+  columnVerticalPadding: 0
 }
 
 export default ReactWindowGrid
