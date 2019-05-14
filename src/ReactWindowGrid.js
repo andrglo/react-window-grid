@@ -153,7 +153,7 @@ const calcColumnSize = ({
   if (columnWidth >= valueWidth + columnVerticalPadding) {
     return [
       lineHeight + columnVerticalPadding,
-      column.width || valueWidth + columnHorizontalPadding
+      (column.width || valueWidth) + columnHorizontalPadding
     ]
   }
   const lines = 1 + Math.round(valueWidth / columnWidth)
@@ -161,12 +161,12 @@ const calcColumnSize = ({
   if (column.maxHeight && columnHeight > column.maxHeight) {
     return [
       column.maxHeight,
-      column.width || columnWidth + columnHorizontalPadding
+      (column.width || columnWidth) + columnHorizontalPadding
     ]
   }
   return [
     columnHeight + columnVerticalPadding,
-    column.width || columnWidth + columnHorizontalPadding
+    (column.width || columnWidth) + columnHorizontalPadding
   ]
 }
 
