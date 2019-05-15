@@ -83,6 +83,7 @@ const ReactWindowGrid = props => {
     style = {},
     columnHorizontalPadding,
     columnVerticalPadding,
+    verticalPadding,
     ...rest
   } = props
 
@@ -213,7 +214,7 @@ const ReactWindowGrid = props => {
   }
   let heightIsNotEnough
   if (height === undefined) {
-    height = requiredHeight
+    height = requiredHeight + verticalPadding
   } else {
     heightIsNotEnough = requiredHeight > height
   }
@@ -359,6 +360,7 @@ ReactWindowGrid.propTypes = {
   lineHeight: PropTypes.number,
   columnHorizontalPadding: PropTypes.number,
   columnVerticalPadding: PropTypes.number,
+  verticalPadding: PropTypes.number,
   columnHeaderHeight: PropTypes.number,
   columnHeaderProps: PropTypes.object,
   rowHeaderProps: PropTypes.object,
@@ -370,7 +372,8 @@ ReactWindowGrid.propTypes = {
 
 ReactWindowGrid.defaultProps = {
   columnHorizontalPadding: 0,
-  columnVerticalPadding: 0
+  columnVerticalPadding: 0,
+  verticalPadding: 0
 }
 
 export default ReactWindowGrid
