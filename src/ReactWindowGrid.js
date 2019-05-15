@@ -238,7 +238,7 @@ const ReactWindowGrid = props => {
     hasHorizontalScrollBar || widthIsNotEnough ? scrollbarSize() : 0
   return (
     <div {...rest} style={{...style, width, position: 'relative', height}}>
-      <div style={{position: absolute, left: rowHeaderWidth}}>
+      <div style={{position: absolute, top: 0, left: rowHeaderWidth}}>
         <VariableSizeList
           ref={headerRef}
           layout="horizontal"

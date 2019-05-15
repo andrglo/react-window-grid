@@ -7,7 +7,7 @@ exports[`Auto calculate height and width 1`] = `
     style="width: 100px; position: relative; height: 50px;"
   >
     <div
-      style="position: absolute; left: 10px;"
+      style="position: absolute; top: 0px; left: 10px;"
     >
       <div
         style="position: relative; height: 12.5px; width: 90px; overflow: hidden; will-change: transform; direction: ltr;"
@@ -108,7 +108,7 @@ exports[`Case when recordset is empty use label or id to calc width 1`] = `
     style="width: 100px; position: relative; height: 50px;"
   >
     <div
-      style="position: absolute; left: 10px;"
+      style="position: absolute; top: 0px; left: 10px;"
     >
       <div
         style="position: relative; height: 12.5px; width: 90px; overflow: hidden; will-change: transform; direction: ltr;"
@@ -162,7 +162,7 @@ exports[`Use customized render 1`] = `
     style="width: 200px; position: relative; height: 500px;"
   >
     <div
-      style="position: absolute; left: 30px;"
+      style="position: absolute; top: 0px; left: 30px;"
     >
       <div
         style="position: relative; height: 12.5px; width: 170px; overflow: hidden; will-change: transform; direction: ltr;"
