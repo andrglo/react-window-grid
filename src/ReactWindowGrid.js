@@ -7,6 +7,112 @@ const absolute = 'absolute'
 
 const getText = value => String(value === undefined ? '' : value)
 
+const renderColumnHeader = params => {
+  const {
+    index,
+    style,
+    data: {columns, render}
+  } = params
+  return render ? (
+    render({columnIndex: index, style})
+  ) : (
+    <div style={style}>{columns[index].label || columns[index].id || ''}</div>
+  )
+}
+
+const ColumnHeader = props => {
+  const {
+    height,
+    itemCount,
+    itemSize,
+    width,
+    columns,
+    render,
+    headerRef,
+    style = {},
+    ...rest
+  } = props
+  return (
+    <VariableSizeList
+      ref={headerRef}
+      layout="horizontal"
+      height={height}
+      width={width}
+      itemCount={itemCount}
+      itemSize={itemSize}
+      itemData={{columns, render}}
+      style={{overflow: 'hidden', ...style}}
+      {...rest}
+    >
+      {renderColumnHeader}
+    </VariableSizeList>
+  )
+}
+
+ColumnHeader.propTypes = {
+  headerRef: PropTypes.object.isRequired,
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  itemCount: PropTypes.number.isRequired,
+  itemSize: PropTypes.func.isRequired,
+  render: PropTypes.func,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  style: PropTypes.object
+}
+
+const renderRowHeader = params => {
+  const {
+    index,
+    style,
+    data: {render}
+  } = params
+  return render ? (
+    render({
+      rowIndex: index,
+      style
+    })
+  ) : (
+    <div style={style}>{index + 1}</div>
+  )
+}
+
+const RowHeader = props => {
+  const {
+    height,
+    width,
+    itemCount,
+    itemSize,
+    render,
+    rowHeaderRef,
+    style = {},
+    ...rest
+  } = props
+  return (
+    <VariableSizeList
+      ref={rowHeaderRef}
+      height={height}
+      width={width}
+      itemCount={itemCount}
+      itemSize={itemSize}
+      itemData={{render}}
+      style={{overflow: 'hidden', ...style}}
+      {...rest}
+    >
+      {renderRowHeader}
+    </VariableSizeList>
+  )
+}
+
+RowHeader.propTypes = {
+  rowHeaderRef: PropTypes.object.isRequired,
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  itemCount: PropTypes.number.isRequired,
+  itemSize: PropTypes.func.isRequired,
+  render: PropTypes.func,
+  style: PropTypes.object
+}
+
 const calcColumnSize = ({
   value,
   column,
@@ -58,6 +164,38 @@ const calcColumnSize = ({
     columnHeight + columnVerticalPadding,
     (column.width || columnWidth) + columnHorizontalPadding
   ]
+}
+
+const renderCell = params => {
+  let {
+    columnIndex,
+    rowIndex,
+    style,
+    data: {recordset, footerIndex, width, columns, Footer, render}
+  } = params
+  if (footerIndex === rowIndex) {
+    if (columnIndex === 0) {
+      style = {...style, width}
+      return (
+        <div style={style}>
+          <Footer />
+        </div>
+      )
+    }
+    return null
+  }
+  if (render) {
+    return render({
+      rowIndex,
+      columnIndex,
+      style
+    })
+  } else {
+    const record = recordset[rowIndex]
+    const value = (record || {})[columns[columnIndex].id]
+    style = {...style, overflow: 'hidden', textOverflow: 'ellipsis'}
+    return <div style={style}>{getText(value)}</div>
+  }
 }
 
 const ReactWindowGrid = props => {
@@ -239,55 +377,28 @@ const ReactWindowGrid = props => {
   return (
     <div {...rest} style={{...style, width, position: 'relative', height}}>
       <div style={{position: absolute, top: 0, left: rowHeaderWidth}}>
-        <VariableSizeList
-          ref={headerRef}
-          layout="horizontal"
+        <ColumnHeader
+          headerRef={headerRef}
           height={columnHeaderHeight}
           width={gridWidth - headerMarginRight}
           itemCount={columns.length}
           itemSize={getColumnWidth}
+          render={columnHeaderRenderer}
+          columns={columns}
           {...columnHeaderProps}
-          style={{
-            overflow: 'hidden',
-            ...((columnHeaderProps && columnHeaderProps.style) || {})
-          }}
-        >
-          {({style, index}) =>
-            columnHeaderRenderer ? (
-              columnHeaderRenderer({columnIndex: index, style})
-            ) : (
-              <div style={style}>
-                {columns[index].label || columns[index].id || ''}
-              </div>
-            )
-          }
-        </VariableSizeList>
+        />
       </div>
       {hasRowHeader && (
         <div style={{position: absolute, left: 0, top: columnHeaderHeight}}>
-          <VariableSizeList
-            ref={rowHeaderRef}
+          <RowHeader
+            rowHeaderRef={rowHeaderRef}
             height={height - columnHeaderHeight - columnHeaderMarginBottom}
             width={rowHeaderWidth}
             itemCount={recordset.length}
             itemSize={getRowHeight}
+            render={rowHeaderRenderer}
             {...rowHeaderProps}
-            style={{
-              overflow: 'hidden',
-              ...((rowHeaderProps && rowHeaderProps.style) || {})
-            }}
-          >
-            {({style, index}) =>
-              rowHeaderRenderer ? (
-                rowHeaderRenderer({
-                  rowIndex: index,
-                  style
-                })
-              ) : (
-                <div style={style}>{index + 1}</div>
-              )
-            }
-          </VariableSizeList>
+          />
         </div>
       )}
       <div
@@ -307,32 +418,17 @@ const ReactWindowGrid = props => {
           columnCount={columns.length}
           columnWidth={getColumnWidth}
           onScroll={onScroll}
+          itemData={{
+            recordset,
+            footerIndex,
+            width: measuredWidth - headerMarginRight,
+            columns,
+            Footer,
+            render: cellRenderer
+          }}
           {...bodyProps}
         >
-          {({columnIndex, rowIndex, style}) => {
-            if (footerIndex === rowIndex) {
-              if (columnIndex === 0) {
-                style = {...style, width: measuredWidth - headerMarginRight}
-                return (
-                  <div style={style}>
-                    <Footer />
-                  </div>
-                )
-              }
-              return null
-            }
-            if (cellRenderer) {
-              return cellRenderer({
-                rowIndex,
-                columnIndex,
-                style
-              })
-            }
-            const record = recordset[rowIndex]
-            const value = (record || {})[columns[columnIndex].id]
-            style = {...style, overflow: 'hidden', textOverflow: 'ellipsis'}
-            return <div style={style}>{getText(value)}</div>
-          }}
+          {renderCell}
         </VariableSizeGrid>
       </div>
     </div>
