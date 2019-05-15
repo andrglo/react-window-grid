@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import {VariableSizeList, VariableSizeGrid} from 'react-window'
 import scrollbarSize from 'dom-helpers/util/scrollbarSize'
 
-const flex = {
-  display: 'flex'
-}
+const absolute = 'absolute'
 
 const renderColumnHeader = params => {
   const {
@@ -355,7 +353,7 @@ const ReactWindowGrid = props => {
   }
   let heightIsNotEnough
   if (height === undefined) {
-    height = requiredHeight + 4 /* padding case when using borders */
+    height = requiredHeight
   } else {
     heightIsNotEnough = requiredHeight > height
   }
@@ -378,9 +376,8 @@ const ReactWindowGrid = props => {
   const columnHeaderMarginBottom =
     hasHorizontalScrollBar || widthIsNotEnough ? scrollbarSize() : 0
   return (
-    <div {...rest} style={{...style, width}}>
-      <div style={flex}>
-        {hasRowHeader && <div style={{width: rowHeaderWidth}} />}
+    <div {...rest} style={{...style, width, position: 'relative', height}}>
+      <div style={{position: absolute, left: rowHeaderWidth}}>
         <ColumnHeader
           headerRef={headerRef}
           height={columnHeaderHeight}
@@ -392,18 +389,30 @@ const ReactWindowGrid = props => {
           {...columnHeaderProps}
         />
       </div>
-      <div style={flex}>
-        {hasRowHeader && (
+      {hasRowHeader && (
+        <div style={{position: absolute, left: 0, top: columnHeaderHeight}}>
           <RowHeader
             rowHeaderRef={rowHeaderRef}
-            height={height - columnHeaderHeight - columnHeaderMarginBottom}
+            height={
+              height -
+              columnHeaderHeight -
+              columnHeaderMarginBottom
+            }
             width={rowHeaderWidth}
             itemCount={recordset.length}
             itemSize={getRowHeight}
             render={rowHeaderRenderer}
             {...rowHeaderProps}
           />
-        )}
+        </div>
+      )}
+      <div
+        style={{
+          position: absolute,
+          left: rowHeaderWidth,
+          top: columnHeaderHeight
+        }}
+      >
         <VariableSizeGrid
           ref={gridRef}
           innerRef={innerRef}

@@ -18,7 +18,8 @@ import faker from 'faker'
 import ReactWindowGrid from '../..'
 import {db, locales} from './data'
 
-const border = 'solid 1px black'
+const border = 'solid 0.5px #aaa'
+const boxSizing = 'border-box'
 
 const tests = [
   // copied from ../_tests_/index.js
@@ -202,22 +203,22 @@ const useStyles = makeStyles(theme => {
     grid: {
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       backgroundColor: theme.palette.background.default,
-      border: '1px solid black'
+      border
     },
     columnHeader: {
-      boxSizing: 'border-box',
+      boxSizing,
       borderTop: border,
-      borderRight: border,
+      borderRight: border
     },
     rowHeader: {
-      boxSizing: 'border-box',
+      boxSizing,
       borderBottom: border,
-      borderLeft: border,
+      borderLeft: border
     },
     cell: {
-      boxSizing: 'border-box',
+      boxSizing,
       borderRight: border,
-      borderBottom: border,
+      borderBottom: border
     }
   }
 })
@@ -226,7 +227,7 @@ const Demo = () => {
   const classes = useStyles()
   const [tableName, setTableName] = useState(tables[0])
   const [locale, setLocale] = useState('en')
-  const [numberOfRows, setNumberOfRows] = useState(50)
+  const [numberOfRows, setNumberOfRows] = useState(100)
   const [columns, recordset] = useMemo(() => {
     console.log(`generating ${numberOfRows} records`, tableName)
     faker.locale = locale
@@ -342,24 +343,21 @@ const Demo = () => {
             {...tests[2][1]}
             columnHeaderProps={{
               style: {
-                boxSizing: 'border-box',
+                boxSizing,
                 borderLeft: border,
                 borderRight: border
               }
             }}
             bodyProps={{
               style: {
-                boxSizing: 'border-box',
+                boxSizing,
                 border
-                // borderLeft: border,
-                // borderTop: border,
               }
             }}
             rowHeaderProps={{
               style: {
                 borderTop: border,
-                boxSizing: 'border-box',
-                // borderBottom: border
+                boxSizing
               }
             }}
             columnHeaderRenderer={({columnIndex, style}) => {

@@ -4,14 +4,11 @@ exports[`Auto calculate height and width 1`] = `
 <div>
   <div
     id="test1"
-    style="width: 100px;"
+    style="width: 100px; position: relative; height: 50px;"
   >
     <div
-      style="display: flex;"
+      style="position: absolute; left: 10px;"
     >
-      <div
-        style="width: 10px;"
-      />
       <div
         style="position: relative; height: 12.5px; width: 90px; overflow: hidden; will-change: transform; direction: ltr;"
       >
@@ -32,7 +29,7 @@ exports[`Auto calculate height and width 1`] = `
       </div>
     </div>
     <div
-      style="display: flex;"
+      style="position: absolute; left: 0px; top: 12.5px;"
     >
       <div
         style="position: relative; height: 37.5px; width: 10px; overflow: hidden; will-change: transform; direction: ltr;"
@@ -57,6 +54,10 @@ exports[`Auto calculate height and width 1`] = `
           </div>
         </div>
       </div>
+    </div>
+    <div
+      style="position: absolute; left: 10px; top: 12.5px;"
+    >
       <div
         style="position: relative; height: 37.5px; width: 90px; overflow: auto; will-change: transform; direction: ltr;"
       >
@@ -104,14 +105,11 @@ exports[`Case when recordset is empty use label or id to calc width 1`] = `
 <div>
   <div
     id="test2"
-    style="width: 100px;"
+    style="width: 100px; position: relative; height: 50px;"
   >
     <div
-      style="display: flex;"
+      style="position: absolute; left: 10px;"
     >
-      <div
-        style="width: 10px;"
-      />
       <div
         style="position: relative; height: 12.5px; width: 90px; overflow: hidden; will-change: transform; direction: ltr;"
       >
@@ -132,7 +130,7 @@ exports[`Case when recordset is empty use label or id to calc width 1`] = `
       </div>
     </div>
     <div
-      style="display: flex;"
+      style="position: absolute; left: 0px; top: 12.5px;"
     >
       <div
         style="position: relative; height: 37.5px; width: 10px; overflow: hidden; will-change: transform; direction: ltr;"
@@ -141,6 +139,10 @@ exports[`Case when recordset is empty use label or id to calc width 1`] = `
           style="height: 0px; width: 100%;"
         />
       </div>
+    </div>
+    <div
+      style="position: absolute; left: 10px; top: 12.5px;"
+    >
       <div
         style="position: relative; height: 37.5px; width: 90px; overflow: auto; will-change: transform; direction: ltr;"
       >
@@ -157,14 +159,11 @@ exports[`Use customized render 1`] = `
 <div>
   <div
     id="test3"
-    style="width: 200px;"
+    style="width: 200px; position: relative; height: 500px;"
   >
     <div
-      style="display: flex;"
+      style="position: absolute; left: 30px;"
     >
-      <div
-        style="width: 30px;"
-      />
       <div
         style="position: relative; height: 12.5px; width: 170px; overflow: hidden; will-change: transform; direction: ltr;"
       >
@@ -205,7 +204,7 @@ exports[`Use customized render 1`] = `
       </div>
     </div>
     <div
-      style="display: flex;"
+      style="position: absolute; left: 0px; top: 12.5px;"
     >
       <div
         style="position: relative; height: 487.5px; width: 30px; overflow: hidden; will-change: transform; direction: ltr;"
@@ -245,6 +244,10 @@ exports[`Use customized render 1`] = `
           </div>
         </div>
       </div>
+    </div>
+    <div
+      style="position: absolute; left: 30px; top: 12.5px;"
+    >
       <div
         style="position: relative; height: 487.5px; width: 170px; overflow: auto; will-change: transform; direction: ltr;"
       >
