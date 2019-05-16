@@ -379,6 +379,7 @@ ReactWindowGrid.propTypes = {
       id: PropTypes.string.isRequired,
       label: PropTypes.string,
       height: PropTypes.number,
+      maxHeight: PropTypes.number,
       width: PropTypes.number
     }).isRequired
   ).isRequired,
