@@ -5,7 +5,7 @@ A react grid with column and row headers, like an spreadsheet
 
  [![npm version](https://badge.fury.io/js/%40andrglo%2Freact-window-grid.svg)](https://badge.fury.io/js/%40andrglo%2Freact-window-grid) [![Dependency Status][daviddm-image]][daviddm-url] [![CircleCI](https://circleci.com/gh/andrglo/react-window-grid.svg?style=svg)](https://circleci.com/gh/andrglo/react-window-grid) [![Coverage Status](https://coveralls.io/repos/github/andrglo/react-window-grid/badge.svg?branch=master)](https://coveralls.io/github/andrglo/react-window-grid?branch=master)
 
-> See a demo at [code sandbox](https://codesandbox.io/s/2vy5p9yqyj)
+> See a demo at [code sandbox](https://codesandbox.io/s/reactwindowgrid-demo-ux5we)
 
 ## Installation
 
