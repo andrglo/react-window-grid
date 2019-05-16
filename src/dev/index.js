@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import startCase from 'lodash.startcase'
 import useEventListener from '@use-it/event-listener'
+import Draggable from 'react-draggable'
 
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -120,6 +121,7 @@ const tests = [
         }
       ],
       rowHeaderWidth: 30,
+      columnHorizontalPadding: 2,
       columnHeaderRenderer: ({columnIndex, style}) => {
         const column = tests[2][1].columns[columnIndex]
         return <div style={style}>{column.label}</div>
@@ -208,7 +210,11 @@ const useStyles = makeStyles(theme => {
     columnHeader: {
       boxSizing,
       borderTop: border,
-      borderRight: border
+      borderRight: border,
+      display: 'flex',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap'
     },
     rowHeader: {
       boxSizing,
@@ -219,6 +225,26 @@ const useStyles = makeStyles(theme => {
       boxSizing,
       borderRight: border,
       borderBottom: border
+    },
+    dragHandle: {
+      flex: '0 0 16px',
+      zIndex: 2,
+      cursor: 'col-resize',
+      color: 'rgba(0, 0, 0, 0.6)'
+    },
+    dragHandleActive: {
+      '&:hover': {
+        color: 'rgba(0, 0, 0, 0.8)',
+        zIndex: 3
+      }
+    },
+    dragHandleIcon: {
+      flex: '0 0 2px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'inherit'
     }
   }
 })
@@ -261,6 +287,17 @@ const Demo = () => {
   const [rowHeaderWidth, setRowHeaderWidth] = useState(50)
   const [fontSize, setFontSize] = useState(16)
   useEventListener('resize', () => setPanelWidth(0))
+
+  const [columnsWidth, setColumnsWidth] = useState({})
+  const resizedColumns = useMemo(() => {
+    return columns.map((column, index) => {
+      return {
+        ...column,
+        width: columnsWidth[index] || 100
+      }
+    })
+  }, [columnsWidth, columns])
+
   return (
     <Paper className={classes.root}>
       <Grid container spacing={3}>
@@ -306,6 +343,9 @@ const Demo = () => {
           />
         </Grid>
         <Grid item xs={12} ref={panel}>
+          <Typography variant="caption" align="center">
+            Auto calculating column width and row
+          </Typography>
           <ReactWindowGrid
             style={{
               fontSize
@@ -316,6 +356,43 @@ const Demo = () => {
             columns={columns}
             recordset={recordset}
             rowHeaderWidth={rowHeaderWidth}
+          />
+        </Grid>
+        <Grid item xs={12} ref={panel}>
+          <Typography variant="caption" align="center">
+            Controled column width and row with column resizing
+          </Typography>
+          <ReactWindowGrid
+            className={classes.grid}
+            height={300}
+            width={panelWidth}
+            columns={resizedColumns}
+            recordset={recordset}
+            rowHeaderWidth={rowHeaderWidth}
+            columnHeaderRenderer={({columnIndex, style}) => {
+              const column = resizedColumns[columnIndex]
+              return (
+                <div style={style} className={classes.columnHeader}>
+                  <Typography style={{width: '100%'}} variant="caption">
+                    {column.label}
+                  </Typography>
+                  <Draggable
+                    axis="x"
+                    defaultClassName={classes.dragHandle}
+                    defaultClassNameDragging={classes.dragHandleActive}
+                    onDrag={(event, {deltaX}) => {
+                      setColumnsWidth({
+                        [`${columnIndex}`]: column.width + deltaX
+                      })
+                    }}
+                    position={{x: 0}}
+                    zIndex={999}
+                  >
+                    <div className={classes.dragHandleIcon} />
+                  </Draggable>
+                </div>
+              )
+            }}
           />
         </Grid>
         <Grid item xs={12}>
