@@ -141,7 +141,7 @@ const ReactWindowGrid = props => {
     gridRef,
     scrollToTopOnNewRecordset,
     lineHeight,
-    style = {},
+    style,
     columnHorizontalPadding,
     columnVerticalPadding,
     verticalPadding,
@@ -237,31 +237,13 @@ const ReactWindowGrid = props => {
     if (rowHeaderRef.current) {
       rowHeaderRef.current.resetAfterIndex(0)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordset, rowHeights, columnWidths])
+  }, [recordset, rowHeights, columnWidths, scrollToTopOnNewRecordset, gridRef])
 
-  const [measuredWidth, setMeasuredWidth] = useState(0)
-  const [hasVerticalScrollBar, setHasVerticalScrollBar] = useState(false)
-  const [hasHorizontalScrollBar, setHasHorizontalScrollBar] = useState(false)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    const hasHorizontal =
-      innerRef.current.scrollWidth > innerRef.current.offsetWidth
-    const hasVertical =
-      innerRef.current.scrollHeight > innerRef.current.offsetHeight
-    if (hasHorizontal !== hasHorizontalScrollBar) {
-      setHasHorizontalScrollBar(hasHorizontal)
-    }
-    if (hasVertical !== hasVerticalScrollBar) {
-      setHasVerticalScrollBar(hasVertical)
-    }
-    if (measuredWidth !== innerRef.current.offsetWidth) {
-      setMeasuredWidth(innerRef.current.offsetWidth)
-    }
     setFont(
       window.getComputedStyle(innerRef.current, null).getPropertyValue('font')
     )
-  })
+  }, [style, props.className])
 
   const footerIndex = Footer ? recordset.length : -1
   const rowCount = recordset.length + (Footer ? 1 : 0)
@@ -270,7 +252,7 @@ const ReactWindowGrid = props => {
   const columnsWidth = columnWidths.reduce((w, width) => w + width, 0)
   let widthIsNotEnough = gridWidth < columnsWidth
   let requiredHeight = columnHeaderHeight + totalHeight
-  if (hasHorizontalScrollBar || widthIsNotEnough) {
+  if (widthIsNotEnough) {
     requiredHeight += scrollbarSize()
   }
   let heightIsNotEnough
@@ -290,15 +272,15 @@ const ReactWindowGrid = props => {
   useLayoutEffect(() => {
     headerRef.current.resetAfterIndex(0)
     gridRef.current.resetAfterColumnIndex(0)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columns, rowHeights, columnWidths])
+  }, [columns, rowHeights, columnWidths, gridRef])
   const getColumnWidth = i => columnWidths[i] || 0
-  const headerMarginRight =
-    hasVerticalScrollBar || heightIsNotEnough ? scrollbarSize() : 0
-  const columnHeaderMarginBottom =
-    hasHorizontalScrollBar || widthIsNotEnough ? scrollbarSize() : 0
+  const headerMarginRight = heightIsNotEnough ? scrollbarSize() : 0
+  const columnHeaderMarginBottom = widthIsNotEnough ? scrollbarSize() : 0
   return (
-    <div {...rest} style={{...style, width, position: 'relative', height}}>
+    <div
+      {...rest}
+      style={{...(style || {}), width, position: 'relative', height}}
+    >
       <div style={{position: absolute, top: 0, left: rowHeaderWidth}}>
         <VariableSizeList
           ref={headerRef}
@@ -356,7 +338,7 @@ const ReactWindowGrid = props => {
           itemData={{
             recordset,
             footerIndex,
-            width: measuredWidth - headerMarginRight,
+            width: width - headerMarginRight,
             columns,
             Footer,
             render: cellRenderer
@@ -399,6 +381,7 @@ ReactWindowGrid.propTypes = {
   bodyProps: PropTypes.object,
   gridRef: PropTypes.object,
   style: PropTypes.object,
+  className: PropTypes.string,
   scrollToTopOnNewRecordset: PropTypes.bool
 }
 
