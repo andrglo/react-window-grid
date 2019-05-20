@@ -298,6 +298,13 @@ const Demo = () => {
     })
   }, [columnsWidth, columns])
 
+  const firstGridStyle = useMemo(
+    () => ({
+      fontSize
+    }),
+    [fontSize]
+  )
+
   return (
     <Paper className={classes.root}>
       <Grid container spacing={3}>
@@ -347,9 +354,7 @@ const Demo = () => {
             Auto calculating column width and row
           </Typography>
           <ReactWindowGrid
-            style={{
-              fontSize
-            }}
+            style={firstGridStyle}
             className={classes.grid}
             height={300}
             width={panelWidth}
