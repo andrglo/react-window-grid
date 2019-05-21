@@ -65,8 +65,8 @@ ReactDOM.render(
 | __bodyProps__ | object | Additional props to be passed to the react-window [VariableSizeGrid](https://react-window.now.sh/#/api/VariableSizeGrid) that is the grid body |
 | __columnHeaderProps__ | object | Additional props to be passed to the react-window [VariableSizeList](https://react-window.now.sh/#/api/VariableSizeList) that is the grid header |
 | __rowHeaderProps__ | object | Additional props to be passed to the react-window [VariableSizeList](https://react-window.now.sh/#/api/VariableSizeList) that is the grid row header |
-| __columnHorizontalPadding__ | number | Used to calculate column width. If not defined zero will be used |
-| __columnVerticalPadding__ | number | Used to calculate column height. If not defined zero will be used |
+| __columnHorizontalPadding__ | number | For adjustments in column width, for example if you use borders, If not defined zero will be used |
+| __columnVerticalPadding__ | number | For adjustments in column height, for example if you use borders. If not defined zero will be used |
 
 ### Column props
 
