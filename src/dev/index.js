@@ -209,12 +209,8 @@ const useStyles = makeStyles(theme => {
     },
     columnHeader: {
       boxSizing,
-      borderTop: border,
       borderRight: border,
-      display: 'flex',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap'
+      display: 'flex'
     },
     rowHeader: {
       boxSizing,
@@ -377,8 +373,19 @@ const Demo = () => {
             columnHeaderRenderer={({columnIndex, style}) => {
               const column = resizedColumns[columnIndex]
               return (
-                <div style={style} className={classes.columnHeader}>
-                  <Typography style={{width: '100%'}} variant="caption">
+                <div
+                  style={{...style, borderBottom: border, paddingLeft: 4}}
+                  className={classes.columnHeader}
+                >
+                  <Typography
+                    style={{
+                      width: '100%',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}
+                    variant="caption"
+                  >
                     {column.label}
                   </Typography>
                   <Draggable
@@ -445,7 +452,10 @@ const Demo = () => {
             columnHeaderRenderer={({columnIndex, style}) => {
               const column = tests[2][1].columns[columnIndex]
               return (
-                <div style={style} className={classes.columnHeader}>
+                <div
+                  style={{...style, borderTop: border}}
+                  className={classes.columnHeader}
+                >
                   {column.label}
                 </div>
               )
