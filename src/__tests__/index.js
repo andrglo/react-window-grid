@@ -4,7 +4,7 @@ import {
   cleanup,
   // eslint-disable-next-line no-unused-vars
   prettyDOM
-} from 'react-testing-library'
+} from '@testing-library/react'
 
 import ReactWindowGrid from '../..'
 
