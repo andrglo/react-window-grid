@@ -1,7 +1,7 @@
 import React, {useRef, useState, useLayoutEffect, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {VariableSizeList, VariableSizeGrid} from 'react-window'
-import scrollbarSize from 'dom-helpers/util/scrollbarSize'
+import scrollbarSize from 'dom-helpers/scrollbarSize'
 
 const absolute = 'absolute'
 
