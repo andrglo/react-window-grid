@@ -1,6 +1,6 @@
 {
   "name": "@andrglo/react-window-grid",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "A react grid with synced column and row headers",
   "repository": "https://github.com/andrglo/react-window-grid.git",
   "main": "src",
