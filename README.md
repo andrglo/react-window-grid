@@ -56,9 +56,9 @@ ReactDOM.render(
 | __height__ | number | The grid total height |
 | __maxHeight__ | number | Limits the maximum height |
 | __rowHeaderWidth__ | number | Default is zero. Show a left header for each row and define the width |
-| __cellRenderer__ | ({rowIndex: number, columnIndex: number}) => ReactElement | Render a row header header. If not defined the record value will be showed |
-| __columnHeaderRenderer__ | ({columnIndex: number}) => ReactElement | Render a column header.  If not defined the column label or the column id will be showed |
-| __rowHeaderRenderer__ | ({rowIndex: number}) => ReactElement | Render a row header header. If not defined the row sequence begining with1 will be showed |
+| __cellRenderer__ | ({rowIndex: number, columnIndex: number, style: object}) => ReactElement | Render a row header header. If not defined the record value will be showed |
+| __columnHeaderRenderer__ | ({columnIndex: number, style: object}) => ReactElement | Render a column header.  If not defined the column label or the column id will be showed |
+| __rowHeaderRenderer__ | ({rowIndex: number, style: object}) => ReactElement | Render a row header header. If not defined the row sequence begining with1 will be showed |
 | __footerRenderer__ | () => ReactElement | Render a footer after the last row |
 | __lineHeight__ | number | Define the line height. If not defined the current font size will be used|
 | __columnHeaderHeight__ | number | Define the column header height. If not defined __lineHeight__ will be used|
