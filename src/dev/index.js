@@ -212,6 +212,15 @@ const useStyles = makeStyles(theme => {
       borderRight: border,
       display: 'flex'
     },
+    rowColumnHeader: {
+      fontSize: '0.75rem',
+      fontFamily: 'Roboto',
+      fontWeight: 400,
+      lineHeight: 1.66,
+      letterSpacing: '0.03333em',
+      borderBottom: border,
+      padding: '1px  0 0 4px'
+    },
     rowHeader: {
       boxSizing,
       borderBottom: border,
@@ -361,7 +370,8 @@ const Demo = () => {
         </Grid>
         <Grid item xs={12} ref={panel}>
           <Typography variant="caption" align="center">
-            Controled column width and row with column resizing
+            Controled column width and row with column resizing. Customized
+            column header for row header.
           </Typography>
           <ReactWindowGrid
             className={classes.grid}
@@ -405,6 +415,14 @@ const Demo = () => {
                 </div>
               )
             }}
+            rowColumnHeader={
+              <div
+                style={{width: 50}}
+                className={`${classes.columnHeader} ${classes.rowColumnHeader}`}
+              >
+                Items
+              </div>
+            }
           />
         </Grid>
         <Grid item xs={12}>

@@ -145,6 +145,7 @@ const ReactWindowGrid = props => {
     columnHorizontalPadding,
     columnVerticalPadding,
     verticalPadding,
+    rowColumnHeader
     ...rest
   } = props
 
@@ -281,6 +282,19 @@ const ReactWindowGrid = props => {
       {...rest}
       style={{...(style || {}), width, position: 'relative', height}}
     >
+      {rowColumnHeader && (
+        <div
+          style={{
+            position: absolute,
+            top: 0,
+            left: 0,
+            height: columnHeaderHeight,
+            width: rowHeaderWidth,
+          }}
+        >
+          {rowColumnHeader}
+        </div>
+      )}
       <div style={{position: absolute, top: 0, left: rowHeaderWidth}}>
         <VariableSizeList
           ref={headerRef}
@@ -382,7 +396,8 @@ ReactWindowGrid.propTypes = {
   gridRef: PropTypes.object,
   style: PropTypes.object,
   className: PropTypes.string,
-  scrollToTopOnNewRecordset: PropTypes.bool
+  scrollToTopOnNewRecordset: PropTypes.bool,
+  rowColumnHeader: PropTypes.object
 }
 
 ReactWindowGrid.defaultProps = {
