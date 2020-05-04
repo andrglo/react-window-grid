@@ -40,7 +40,7 @@ const tests = [
         {column1: 'cell 3/1', column2: 'cell 3/2'}
       ],
       rowHeaderWidth: 10
-    },
+    }
   ],
   [
     'Case when recordset is empty use label or id to calc width',
@@ -54,7 +54,7 @@ const tests = [
       ],
       recordset: [],
       rowHeaderWidth: 10
-    },
+    }
   ],
   [
     'Use customized render',
@@ -118,7 +118,7 @@ const tests = [
           column4: 'cell 6/4',
           column5: 'cell 6/5',
           column6: 'cell 6/6'
-        },
+        }
       ],
       rowHeaderWidth: 30,
       columnHorizontalPadding: 2,
@@ -241,7 +241,7 @@ const useStyles = makeStyles(theme => {
       '&:hover': {
         color: 'rgba(0, 0, 0, 0.8)',
         zIndex: 3
-      },
+      }
     },
     dragHandleIcon: {
       flex: '0 0 2px',

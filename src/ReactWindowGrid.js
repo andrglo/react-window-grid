@@ -112,12 +112,12 @@ const calcColumnSize = ({
   if (column.maxHeight && columnHeight > column.maxHeight) {
     return [
       column.maxHeight,
-      (column.width || columnWidth) + columnHorizontalPadding,
+      (column.width || columnWidth) + columnHorizontalPadding
     ]
   }
   return [
     columnHeight + columnVerticalPadding,
-    (column.width || columnWidth) + columnHorizontalPadding,
+    (column.width || columnWidth) + columnHorizontalPadding
   ]
 }
 
@@ -274,7 +274,7 @@ const ReactWindowGrid = props => {
     headerRef.current.resetAfterIndex(0)
     gridRef.current.resetAfterColumnIndex(0)
   }, [columns, rowHeights, columnWidths, gridRef])
-  const getColumnWidth = (i) => columnWidths[i] || 0
+  const getColumnWidth = i => columnWidths[i] || 0
   const headerMarginRight = heightIsNotEnough ? scrollbarSize() : 0
   const columnHeaderMarginBottom = widthIsNotEnough ? scrollbarSize() : 0
   return (
@@ -325,7 +325,7 @@ const ReactWindowGrid = props => {
             itemData={{render: rowHeaderRenderer}}
             style={{
               overflow: 'hidden',
-              ...((rowHeaderProps && rowHeaderProps.style) || {}),
+              ...((rowHeaderProps && rowHeaderProps.style) || {})
             }}
           >
             {renderRowHeader}
@@ -355,7 +355,7 @@ const ReactWindowGrid = props => {
             width: width - headerMarginRight,
             columns,
             Footer,
-            render: cellRenderer,
+            render: cellRenderer
           }}
           {...bodyProps}
         >
@@ -403,7 +403,7 @@ ReactWindowGrid.propTypes = {
 ReactWindowGrid.defaultProps = {
   columnHorizontalPadding: 0,
   columnVerticalPadding: 0,
-  verticalPadding: 0,
+  verticalPadding: 0
 }
 
 export default ReactWindowGrid
