@@ -282,17 +282,19 @@ const ReactWindowGrid = (props) => {
       {...rest}
       style={{...(style || {}), width, position: 'relative', height}}
     >
-      <div
-        style={{
-          position: absolute,
-          top: 0,
-          left: 0,
-          height: columnHeaderHeight,
-          width: rowHeaderWidth,
-        }}
-      >
-        {rowColumnHeader}
-      </div>
+      {rowColumnHeader && (
+        <div
+          style={{
+            position: absolute,
+            top: 0,
+            left: 0,
+            height: columnHeaderHeight,
+            width: rowHeaderWidth,
+          }}
+        >
+          {rowColumnHeader}
+        </div>
+      )}
       <div style={{position: absolute, top: 0, left: rowHeaderWidth}}>
         <VariableSizeList
           ref={headerRef}
