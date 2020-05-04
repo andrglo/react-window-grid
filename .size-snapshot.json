@@ -3,5 +3,10 @@
     "bundled": 5241,
     "minified": 5198,
     "gzipped": 2290
+  },
+  "dist\\react-window-grid.min.js": {
+    "bundled": 5330,
+    "minified": 5287,
+    "gzipped": 2304
   }
 }

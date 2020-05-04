@@ -5,13 +5,13 @@ import scrollbarSize from 'dom-helpers/scrollbarSize'
 
 const absolute = 'absolute'
 
-const getText = value => String(value === undefined ? '' : value)
+const getText = (value) => String(value === undefined ? '' : value)
 
-const renderColumnHeader = params => {
+const renderColumnHeader = (params) => {
   const {
     index,
     style,
-    data: {columns, render}
+    data: {columns, render},
   } = params
   return render ? (
     render({columnIndex: index, style})
@@ -20,28 +20,28 @@ const renderColumnHeader = params => {
   )
 }
 
-const renderRowHeader = params => {
+const renderRowHeader = (params) => {
   const {
     index,
     style,
-    data: {render}
+    data: {render},
   } = params
   return render ? (
     render({
       rowIndex: index,
-      style
+      style,
     })
   ) : (
     <div style={style}>{index + 1}</div>
   )
 }
 
-const renderCell = params => {
+const renderCell = (params) => {
   let {
     columnIndex,
     rowIndex,
     style,
-    data: {recordset, footerIndex, width, columns, Footer, render}
+    data: {recordset, footerIndex, width, columns, Footer, render},
   } = params
   if (footerIndex === rowIndex) {
     if (columnIndex === 0) {
@@ -58,7 +58,7 @@ const renderCell = params => {
     return render({
       rowIndex,
       columnIndex,
-      style
+      style,
     })
   } else {
     const record = recordset[rowIndex]
@@ -74,7 +74,7 @@ const calcColumnSize = ({
   lineHeight,
   columnHorizontalPadding,
   columnVerticalPadding,
-  textContext
+  textContext,
 }) => {
   let columnHeight = column.height
   let columnWidth = column.width
@@ -93,7 +93,7 @@ const calcColumnSize = ({
   if (typeof value !== 'string') {
     return [
       lineHeight + columnVerticalPadding,
-      column.width || (columnWidth || valueWidth) + columnHorizontalPadding
+      column.width || (columnWidth || valueWidth) + columnHorizontalPadding,
     ]
   }
   if (!columnWidth) {
@@ -104,7 +104,7 @@ const calcColumnSize = ({
   if (columnWidth >= valueWidth + columnVerticalPadding) {
     return [
       lineHeight + columnVerticalPadding,
-      (column.width || valueWidth) + columnHorizontalPadding
+      (column.width || valueWidth) + columnHorizontalPadding,
     ]
   }
   const lines = Math.ceil(valueWidth / columnWidth)
@@ -112,16 +112,16 @@ const calcColumnSize = ({
   if (column.maxHeight && columnHeight > column.maxHeight) {
     return [
       column.maxHeight,
-      (column.width || columnWidth) + columnHorizontalPadding
+      (column.width || columnWidth) + columnHorizontalPadding,
     ]
   }
   return [
     columnHeight + columnVerticalPadding,
-    (column.width || columnWidth) + columnHorizontalPadding
+    (column.width || columnWidth) + columnHorizontalPadding,
   ]
 }
 
-const ReactWindowGrid = props => {
+const ReactWindowGrid = (props) => {
   // console.log('ReactWindowGrid', props)
   let {
     height,
@@ -145,6 +145,7 @@ const ReactWindowGrid = props => {
     columnHorizontalPadding,
     columnVerticalPadding,
     verticalPadding,
+    rowColumnHeader,
     ...rest
   } = props
 
@@ -173,7 +174,7 @@ const ReactWindowGrid = props => {
     const rowHeights = []
     const columnWidths = []
     let totalHeight = 0
-    const calcColumnsSize = record => {
+    const calcColumnsSize = (record) => {
       let recordRowHeight = 0
       let i = 0
       for (const column of columns) {
@@ -184,7 +185,7 @@ const ReactWindowGrid = props => {
           lineHeight,
           columnHorizontalPadding,
           columnVerticalPadding,
-          textContext
+          textContext,
         })
         if (columnHeight > recordRowHeight) {
           recordRowHeight = columnHeight
@@ -209,10 +210,10 @@ const ReactWindowGrid = props => {
     lineHeight,
     columnHorizontalPadding,
     columnVerticalPadding,
-    textContext
+    textContext,
   ])
 
-  const getRowHeight = i => rowHeights[i] || 0
+  const getRowHeight = (i) => rowHeights[i] || 0
   const mayBeRef = useRef(null)
   if (!gridRef) {
     gridRef = mayBeRef
@@ -221,7 +222,7 @@ const ReactWindowGrid = props => {
   const headerRef = useRef(null)
   const rowHeaderRef = useRef(null)
 
-  const onScroll = params => {
+  const onScroll = (params) => {
     const {scrollLeft, scrollTop} = params
     headerRef.current.scrollTo(scrollLeft)
     if (rowHeaderRef.current) {
@@ -273,7 +274,7 @@ const ReactWindowGrid = props => {
     headerRef.current.resetAfterIndex(0)
     gridRef.current.resetAfterColumnIndex(0)
   }, [columns, rowHeights, columnWidths, gridRef])
-  const getColumnWidth = i => columnWidths[i] || 0
+  const getColumnWidth = (i) => columnWidths[i] || 0
   const headerMarginRight = heightIsNotEnough ? scrollbarSize() : 0
   const columnHeaderMarginBottom = widthIsNotEnough ? scrollbarSize() : 0
   return (
@@ -281,6 +282,17 @@ const ReactWindowGrid = props => {
       {...rest}
       style={{...(style || {}), width, position: 'relative', height}}
     >
+      <div
+        style={{
+          position: absolute,
+          top: 0,
+          left: 0,
+          height: columnHeaderHeight,
+          width: rowHeaderWidth,
+        }}
+      >
+        {rowColumnHeader}
+      </div>
       <div style={{position: absolute, top: 0, left: rowHeaderWidth}}>
         <VariableSizeList
           ref={headerRef}
@@ -293,7 +305,7 @@ const ReactWindowGrid = props => {
           itemData={{columns, render: columnHeaderRenderer}}
           style={{
             overflow: 'hidden',
-            ...((columnHeaderProps && columnHeaderProps.style) || {})
+            ...((columnHeaderProps && columnHeaderProps.style) || {}),
           }}
         >
           {renderColumnHeader}
@@ -311,7 +323,7 @@ const ReactWindowGrid = props => {
             itemData={{render: rowHeaderRenderer}}
             style={{
               overflow: 'hidden',
-              ...((rowHeaderProps && rowHeaderProps.style) || {})
+              ...((rowHeaderProps && rowHeaderProps.style) || {}),
             }}
           >
             {renderRowHeader}
@@ -322,7 +334,7 @@ const ReactWindowGrid = props => {
         style={{
           position: absolute,
           left: rowHeaderWidth,
-          top: columnHeaderHeight
+          top: columnHeaderHeight,
         }}
       >
         <VariableSizeGrid
@@ -341,7 +353,7 @@ const ReactWindowGrid = props => {
             width: width - headerMarginRight,
             columns,
             Footer,
-            render: cellRenderer
+            render: cellRenderer,
           }}
           {...bodyProps}
         >
@@ -362,7 +374,7 @@ ReactWindowGrid.propTypes = {
       label: PropTypes.string,
       height: PropTypes.number,
       maxHeight: PropTypes.number,
-      width: PropTypes.number
+      width: PropTypes.number,
     }).isRequired
   ).isRequired,
   recordset: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
@@ -382,13 +394,14 @@ ReactWindowGrid.propTypes = {
   gridRef: PropTypes.object,
   style: PropTypes.object,
   className: PropTypes.string,
-  scrollToTopOnNewRecordset: PropTypes.bool
+  scrollToTopOnNewRecordset: PropTypes.bool,
+  rowColumnHeader: PropTypes.object,
 }
 
 ReactWindowGrid.defaultProps = {
   columnHorizontalPadding: 0,
   columnVerticalPadding: 0,
-  verticalPadding: 0
+  verticalPadding: 0,
 }
 
 export default ReactWindowGrid

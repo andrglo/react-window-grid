@@ -32,15 +32,15 @@ const tests = [
       width: 100,
       columns: [
         {id: 'column1', label: 'Column 1'},
-        {id: 'column2', label: 'Column 2'}
+        {id: 'column2', label: 'Column 2'},
       ],
       recordset: [
         {column1: 'cell l/c 1/1', column2: 'cell 1/2'},
         {column1: 'cell 2/1', column2: 'cell 2/2'},
-        {column1: 'cell 3/1', column2: 'cell 3/2'}
+        {column1: 'cell 3/1', column2: 'cell 3/2'},
       ],
-      rowHeaderWidth: 10
-    }
+      rowHeaderWidth: 10,
+    },
   ],
   [
     'Case when recordset is empty use label or id to calc width',
@@ -50,11 +50,11 @@ const tests = [
       width: 100,
       columns: [
         {id: 'column1', label: 'Column 1'},
-        {id: 'column2', label: 'Column 2'}
+        {id: 'column2', label: 'Column 2'},
       ],
       recordset: [],
-      rowHeaderWidth: 10
-    }
+      rowHeaderWidth: 10,
+    },
   ],
   [
     'Use customized render',
@@ -68,7 +68,7 @@ const tests = [
         {id: 'column3', label: 'Column 3'},
         {id: 'column4', label: 'Column 4'},
         {id: 'column5', label: 'Column 5'},
-        {id: 'column6', label: 'Column 6'}
+        {id: 'column6', label: 'Column 6'},
       ],
       recordset: [
         {
@@ -77,7 +77,7 @@ const tests = [
           column3: 'cell 1/3',
           column4: 'cell 1/4',
           column5: 'cell 1/5',
-          column6: 'cell 1/6'
+          column6: 'cell 1/6',
         },
         {
           column1: 'cell 2/1',
@@ -85,7 +85,7 @@ const tests = [
           column3: 'cell 2/3',
           column4: 'cell 2/4',
           column5: 'cell 2/5',
-          column6: 'cell 2/6'
+          column6: 'cell 2/6',
         },
         {
           column1: 'cell 3/1',
@@ -93,7 +93,7 @@ const tests = [
           column3: 'cell 3/3',
           column4: 'cell 3/4',
           column5: 'cell 3/5',
-          column6: 'cell 3/6'
+          column6: 'cell 3/6',
         },
         {
           column1: 'cell 4/1',
@@ -101,7 +101,7 @@ const tests = [
           column3: 'cell 4/3',
           column4: 'cell 4/4',
           column5: 'cell 4/5',
-          column6: 'cell 4/6'
+          column6: 'cell 4/6',
         },
         {
           column1: 'cell 5/1',
@@ -109,7 +109,7 @@ const tests = [
           column3: 'cell 5/3',
           column4: 'cell 5/4',
           column5: 'cell 5/5',
-          column6: 'cell 5/6'
+          column6: 'cell 5/6',
         },
         {
           column1: 'cell 6/1',
@@ -117,8 +117,8 @@ const tests = [
           column3: 'cell 6/3',
           column4: 'cell 6/4',
           column5: 'cell 6/5',
-          column6: 'cell 6/6'
-        }
+          column6: 'cell 6/6',
+        },
       ],
       rowHeaderWidth: 30,
       columnHorizontalPadding: 2,
@@ -134,14 +134,14 @@ const tests = [
         const column = props.columns[columnIndex]
         const record = props.recordset[rowIndex]
         return <div style={style}>{record[column.id]}</div>
-      }
-    }
-  ]
+      },
+    },
+  ],
 ]
 
 const tables = Object.keys(db)
 
-const TableSelect = props => {
+const TableSelect = (props) => {
   return (
     <FormControl fullWidth>
       <InputLabel htmlFor="table">Select table</InputLabel>
@@ -149,10 +149,10 @@ const TableSelect = props => {
         value={props.value}
         onChange={props.onChange}
         inputProps={{
-          id: 'table'
+          id: 'table',
         }}
       >
-        {tables.map(table => {
+        {tables.map((table) => {
           return (
             <MenuItem key={table} value={table}>
               {table}
@@ -166,10 +166,10 @@ const TableSelect = props => {
 
 TableSelect.propTypes = {
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 }
 
-const LocaleSelect = props => {
+const LocaleSelect = (props) => {
   return (
     <FormControl fullWidth>
       <InputLabel htmlFor="locale">Select locale</InputLabel>
@@ -177,10 +177,10 @@ const LocaleSelect = props => {
         value={props.value}
         onChange={props.onChange}
         inputProps={{
-          id: 'locale'
+          id: 'locale',
         }}
       >
-        {locales.map(locale => {
+        {locales.map((locale) => {
           return (
             <MenuItem key={locale} value={locale}>
               {locale}
@@ -194,45 +194,54 @@ const LocaleSelect = props => {
 
 LocaleSelect.propTypes = {
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 }
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
   return {
     root: {
-      padding: theme.spacing(3)
+      padding: theme.spacing(3),
     },
     grid: {
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       backgroundColor: theme.palette.background.default,
-      border
+      border,
     },
     columnHeader: {
       boxSizing,
       borderRight: border,
-      display: 'flex'
+      display: 'flex',
+    },
+    rowColumnHeader: {
+      fontSize: '0.75rem',
+      fontFamily: 'Roboto',
+      fontWeight: 400,
+      lineHeight: 1.66,
+      letterSpacing: '0.03333em',
+      borderBottom: border,
+      padding: '1px  0 0 4px',
     },
     rowHeader: {
       boxSizing,
       borderBottom: border,
-      borderLeft: border
+      borderLeft: border,
     },
     cell: {
       boxSizing,
       borderRight: border,
-      borderBottom: border
+      borderBottom: border,
     },
     dragHandle: {
       flex: '0 0 16px',
       zIndex: 2,
       cursor: 'col-resize',
-      color: 'rgba(0, 0, 0, 0.6)'
+      color: 'rgba(0, 0, 0, 0.6)',
     },
     dragHandleActive: {
       '&:hover': {
         color: 'rgba(0, 0, 0, 0.8)',
-        zIndex: 3
-      }
+        zIndex: 3,
+      },
     },
     dragHandleIcon: {
       flex: '0 0 2px',
@@ -240,8 +249,8 @@ const useStyles = makeStyles(theme => {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      color: 'inherit'
-    }
+      color: 'inherit',
+    },
   }
 })
 
@@ -257,7 +266,7 @@ const Demo = () => {
     for (const columnName of db[tableName]) {
       columns.push({
         id: columnName,
-        label: startCase(columnName)
+        label: startCase(columnName),
       })
     }
     const recordset = []
@@ -289,14 +298,14 @@ const Demo = () => {
     return columns.map((column, index) => {
       return {
         ...column,
-        width: columnsWidth[index] || 100
+        width: columnsWidth[index] || 100,
       }
     })
   }, [columnsWidth, columns])
 
   const firstGridStyle = useMemo(
     () => ({
-      fontSize
+      fontSize,
     }),
     [fontSize]
   )
@@ -312,13 +321,13 @@ const Demo = () => {
         <Grid item xs={4} sm={2}>
           <LocaleSelect
             value={locale}
-            onChange={event => setLocale(event.target.value)}
+            onChange={(event) => setLocale(event.target.value)}
           />
         </Grid>
         <Grid item xs={5} sm={3}>
           <TableSelect
             value={tableName}
-            onChange={event => setTableName(event.target.value)}
+            onChange={(event) => setTableName(event.target.value)}
           />
         </Grid>
         <Grid item xs={3} sm={1}>
@@ -326,7 +335,7 @@ const Demo = () => {
             label="Rows"
             type="number"
             value={numberOfRows}
-            onChange={event => setNumberOfRows(Number(event.target.value))}
+            onChange={(event) => setNumberOfRows(Number(event.target.value))}
           />
         </Grid>
         <Grid item xs={4} sm={3}>
@@ -334,7 +343,7 @@ const Demo = () => {
             label="Row header width"
             type="number"
             value={rowHeaderWidth}
-            onChange={event => setRowHeaderWidth(Number(event.target.value))}
+            onChange={(event) => setRowHeaderWidth(Number(event.target.value))}
           />
         </Grid>
         <Grid item xs={3} sm={2}>
@@ -342,7 +351,7 @@ const Demo = () => {
             label="Font size"
             type="number"
             value={fontSize}
-            onChange={event => setFontSize(Number(event.target.value))}
+            onChange={(event) => setFontSize(Number(event.target.value))}
           />
         </Grid>
         <Grid item xs={12} ref={panel}>
@@ -361,7 +370,8 @@ const Demo = () => {
         </Grid>
         <Grid item xs={12} ref={panel}>
           <Typography variant="caption" align="center">
-            Controled column width and row with column resizing
+            Controled column width and row with column resizing. Customized
+            column header for row headers.
           </Typography>
           <ReactWindowGrid
             className={classes.grid}
@@ -382,7 +392,7 @@ const Demo = () => {
                       width: '100%',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
+                      whiteSpace: 'nowrap',
                     }}
                     variant="caption"
                   >
@@ -394,7 +404,7 @@ const Demo = () => {
                     defaultClassNameDragging={classes.dragHandleActive}
                     onDrag={(event, {deltaX}) => {
                       setColumnsWidth({
-                        [`${columnIndex}`]: column.width + deltaX
+                        [`${columnIndex}`]: column.width + deltaX,
                       })
                     }}
                     position={{x: 0}}
@@ -405,6 +415,14 @@ const Demo = () => {
                 </div>
               )
             }}
+            rowColumnHeader={
+              <div
+                style={{width: 50}}
+                className={`${classes.columnHeader} ${classes.rowColumnHeader}`}
+              >
+                Items
+              </div>
+            }
           />
         </Grid>
         <Grid item xs={12}>
@@ -434,20 +452,20 @@ const Demo = () => {
               style: {
                 boxSizing,
                 borderLeft: border,
-                borderRight: border
-              }
+                borderRight: border,
+              },
             }}
             bodyProps={{
               style: {
                 boxSizing,
-                border
-              }
+                border,
+              },
             }}
             rowHeaderProps={{
               style: {
                 borderTop: border,
-                boxSizing
-              }
+                boxSizing,
+              },
             }}
             columnHeaderRenderer={({columnIndex, style}) => {
               const column = tests[2][1].columns[columnIndex]
