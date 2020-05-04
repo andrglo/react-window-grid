@@ -250,7 +250,7 @@ const useStyles = makeStyles(theme => {
       justifyContent: 'center',
       alignItems: 'center',
       color: 'inherit'
-    },
+    }
   }
 })
 
@@ -371,7 +371,7 @@ const Demo = () => {
         <Grid item xs={12} ref={panel}>
           <Typography variant="caption" align="center">
             Controled column width and row with column resizing. Customized
-            column header for row headers.
+            column header for row header.
           </Typography>
           <ReactWindowGrid
             className={classes.grid}
