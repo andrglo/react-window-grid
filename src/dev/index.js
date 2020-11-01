@@ -16,7 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 
 import faker from 'faker'
-import ReactWindowGrid from '../..'
+import {ReactWindowGrid} from '../..'
 import {db, locales} from './data'
 
 const border = 'solid 0.5px #aaa'

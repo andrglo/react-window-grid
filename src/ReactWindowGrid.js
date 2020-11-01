@@ -121,7 +121,7 @@ const calcColumnSize = ({
   ]
 }
 
-const ReactWindowGrid = props => {
+export const ReactWindowGrid = props => {
   // console.log('ReactWindowGrid', props)
   let {
     height,
@@ -390,5 +390,3 @@ ReactWindowGrid.defaultProps = {
   columnVerticalPadding: 0,
   verticalPadding: 0
 }
-
-export default ReactWindowGrid

@@ -6,7 +6,7 @@ import {
   prettyDOM
 } from '@testing-library/react'
 
-import ReactWindowGrid from '../..'
+import {ReactWindowGrid} from '../..'
 
 afterEach(cleanup)
 

@@ -20,7 +20,7 @@ npm install --save react-window
 ## Usage
 
 ```javascript
-import ReactWindowGrid from '@andrglo/react-window-grid'
+import {ReactWindowGrid} from '@andrglo/react-window-grid'
 
 const Grid = props => (
   <ReactWindowGrid
