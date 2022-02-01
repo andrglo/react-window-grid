@@ -15,7 +15,7 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 
-import faker from 'faker'
+import {faker} from '@faker-js/faker'
 import {ReactWindowGrid} from '../..'
 import {db, locales} from './data'
 
