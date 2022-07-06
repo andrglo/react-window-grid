@@ -1,4 +1,5 @@
 import React, {useState, useMemo, useLayoutEffect, useRef} from 'react'
+import {createRoot} from 'react-dom/client';
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import startCase from 'lodash.startcase'
@@ -140,6 +141,7 @@ const tests = [
 ]
 
 const tables = Object.keys(db)
+console.log('TCL ~ file: index.js ~ line 143 ~ tables', tables)
 
 const TableSelect = props => {
   return (
@@ -484,6 +486,6 @@ const Demo = () => {
   )
 }
 
-ReactDOM.render(<Demo />, document.getElementById('app'))
+createRoot(document.getElementById('app')).render(<Demo />)
 
 module.hot.accept()

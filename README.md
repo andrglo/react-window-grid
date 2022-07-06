@@ -32,7 +32,7 @@ const Grid = props => (
   />
 )
 
-ReactDOM.render(
+createRoot(document.getElementById('app')).render(
   <Grid
     columns={[
       {id: 'column1', label: 'Column 1'},
@@ -43,7 +43,7 @@ ReactDOM.render(
       {column1: 'cell 2/1', column2: 'cell 2/2'},
       {column1: 'cell 3/1', column2: 'cell 3/2'}
     ]}
-  />, document.getElementById('app'))
+  />)
 ```
 
 ### Props

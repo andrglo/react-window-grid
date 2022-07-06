@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 
 module.exports = {
+  mode: 'development',
   entry: './src/dev/index.js',
   output: {
     path: __dirname + '/src/dev',
@@ -9,7 +10,7 @@ module.exports = {
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
-    contentBase: './src/dev',
+    static: './src/dev',
     hot: true
   },
   module: {

@@ -44,9 +44,9 @@ export const db = {
   address: [
     'zipCode',
     'city',
-    'cityPrefix',
-    'citySuffix',
-    'streetName',
+    'city_prefix',
+    'city_suffix',
+    'street',
     'streetAddress',
     'streetSuffix',
     'streetPrefix',
