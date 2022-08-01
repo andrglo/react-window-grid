@@ -141,7 +141,6 @@ const tests = [
 ]
 
 const tables = Object.keys(db)
-console.log('TCL ~ file: index.js ~ line 143 ~ tables', tables)
 
 const TableSelect = props => {
   return (
