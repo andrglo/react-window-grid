@@ -25,9 +25,9 @@ jobs:
       - run:
           name: Tests
           command: |
-            yarn build
-            yarn test
-            yarn test:report:coverage
+            npm run build
+            npm test
+            npm run test:report:coverage
       - persist_to_workspace:
           root: ~/repo
           paths: .
@@ -39,9 +39,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
       - run:
           name: Publish package
           command: |
@@ -57,11 +54,11 @@ jobs:
               echo " => Not publishing"
             else
               echo " => Will publish"
+              npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
               npm publish
             fi
 
 workflows:
-  version: 2
   test-n-publish:
     jobs:
       - test
