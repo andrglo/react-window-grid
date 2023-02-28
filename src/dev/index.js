@@ -1,23 +1,30 @@
-import React, {useState, useMemo, useLayoutEffect, useRef} from 'react'
+import React, {
+  useState,
+  useMemo,
+  useLayoutEffect,
+  useRef
+} from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
+import {createRoot} from 'react-dom/client'
 import startCase from 'lodash.startcase'
 import useEventListener from '@use-it/event-listener'
 import Draggable from 'react-draggable'
 
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import {makeStyles, useTheme} from '@material-ui/core/styles'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Select from '@material-ui/core/Select'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import {useTheme} from '@mui/material/styles'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import Select from '@mui/material/Select'
 
-import faker from 'faker'
+import {faker} from '@faker-js/faker'
 import {ReactWindowGrid} from '../..'
 import {db, locales} from './data'
+
+import './index.css'
 
 const border = 'solid 0.5px #aaa'
 const boxSizing = 'border-box'
@@ -197,56 +204,7 @@ LocaleSelect.propTypes = {
   onChange: PropTypes.func.isRequired
 }
 
-const useStyles = makeStyles(theme => {
-  return {
-    root: {
-      padding: theme.spacing(3)
-    },
-    grid: {
-      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      backgroundColor: theme.palette.background.default,
-      border
-    },
-    columnHeader: {
-      boxSizing,
-      borderRight: border,
-      display: 'flex'
-    },
-    rowHeader: {
-      boxSizing,
-      borderBottom: border,
-      borderLeft: border
-    },
-    cell: {
-      boxSizing,
-      borderRight: border,
-      borderBottom: border
-    },
-    dragHandle: {
-      flex: '0 0 16px',
-      zIndex: 2,
-      cursor: 'col-resize',
-      color: 'rgba(0, 0, 0, 0.6)'
-    },
-    dragHandleActive: {
-      '&:hover': {
-        color: 'rgba(0, 0, 0, 0.8)',
-        zIndex: 3
-      }
-    },
-    dragHandleIcon: {
-      flex: '0 0 2px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      color: 'inherit'
-    }
-  }
-})
-
 const Demo = () => {
-  const classes = useStyles()
   const [tableName, setTableName] = useState(tables[0])
   const [locale, setLocale] = useState('en')
   const [numberOfRows, setNumberOfRows] = useState(100)
@@ -264,7 +222,9 @@ const Demo = () => {
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
       const record = {}
       for (const columnName of db[tableName]) {
-        record[columnName] = faker.fake(`{{${tableName}.${columnName}}}`)
+        record[columnName] = faker.helpers.fake(
+          `{{${tableName}.${columnName}}}`
+        )
       }
       recordset.push(record)
     }
@@ -275,7 +235,8 @@ const Demo = () => {
   const theme = useTheme()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    const availableWidth = panel.current.offsetWidth - 2 * theme.spacing(3)
+    const availableWidth =
+      panel.current.offsetWidth - 2 * Number(theme.spacing(3).slice(0, -2))
     if (availableWidth !== panelWidth) {
       setPanelWidth(availableWidth)
     }
@@ -302,7 +263,11 @@ const Demo = () => {
   )
 
   return (
-    <Paper className={classes.root}>
+    <Paper
+      style={{
+        padding: Number(theme.spacing(3).slice(0, -2))
+      }}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h6" align="center">
@@ -326,7 +291,9 @@ const Demo = () => {
             label="Rows"
             type="number"
             value={numberOfRows}
-            onChange={event => setNumberOfRows(Number(event.target.value))}
+            onChange={event =>
+              setNumberOfRows(Number(event.target.value))
+            }
           />
         </Grid>
         <Grid item xs={4} sm={3}>
@@ -334,7 +301,9 @@ const Demo = () => {
             label="Row header width"
             type="number"
             value={rowHeaderWidth}
-            onChange={event => setRowHeaderWidth(Number(event.target.value))}
+            onChange={event =>
+              setRowHeaderWidth(Number(event.target.value))
+            }
           />
         </Grid>
         <Grid item xs={3} sm={2}>
@@ -342,7 +311,9 @@ const Demo = () => {
             label="Font size"
             type="number"
             value={fontSize}
-            onChange={event => setFontSize(Number(event.target.value))}
+            onChange={event =>
+              setFontSize(Number(event.target.value))
+            }
           />
         </Grid>
         <Grid item xs={12} ref={panel}>
@@ -350,8 +321,13 @@ const Demo = () => {
             Auto calculating column width and row
           </Typography>
           <ReactWindowGrid
-            style={firstGridStyle}
-            className={classes.grid}
+            style={{
+              fontFamily:
+                '"Roboto", "Helvetica", "Arial", sans-serif',
+              backgroundColor: theme.palette.background.default,
+              border,
+              ...firstGridStyle
+            }}
             height={300}
             width={panelWidth}
             columns={columns}
@@ -364,7 +340,12 @@ const Demo = () => {
             Controled column width and row with column resizing
           </Typography>
           <ReactWindowGrid
-            className={classes.grid}
+            style={{
+              fontFamily:
+                '"Roboto", "Helvetica", "Arial", sans-serif',
+              backgroundColor: theme.palette.background.default,
+              border
+            }}
             height={300}
             width={panelWidth}
             columns={resizedColumns}
@@ -374,8 +355,14 @@ const Demo = () => {
               const column = resizedColumns[columnIndex]
               return (
                 <div
-                  style={{...style, borderBottom: border, paddingLeft: 4}}
-                  className={classes.columnHeader}
+                  style={{
+                    ...style,
+                    borderBottom: border,
+                    paddingLeft: 4,
+                    boxSizing,
+                    borderRight: border,
+                    display: 'flex'
+                  }}
                 >
                   <Typography
                     style={{
@@ -390,8 +377,8 @@ const Demo = () => {
                   </Typography>
                   <Draggable
                     axis="x"
-                    defaultClassName={classes.dragHandle}
-                    defaultClassNameDragging={classes.dragHandleActive}
+                    defaultClassName="DragHandle"
+                    defaultClassNameDragging="DragHandleActive"
                     onDrag={(event, {deltaX}) => {
                       setColumnsWidth({
                         [`${columnIndex}`]: column.width + deltaX
@@ -400,7 +387,7 @@ const Demo = () => {
                     position={{x: 0}}
                     zIndex={999}
                   >
-                    <div className={classes.dragHandleIcon} />
+                    <div className="DragHandleIcon" />
                   </Draggable>
                 </div>
               )
@@ -453,8 +440,13 @@ const Demo = () => {
               const column = tests[2][1].columns[columnIndex]
               return (
                 <div
-                  style={{...style, borderTop: border}}
-                  className={classes.columnHeader}
+                  style={{
+                    ...style,
+                    borderTop: border,
+                    boxSizing,
+                    borderRight: border,
+                    display: 'flex'
+                  }}
                 >
                   {column.label}
                 </div>
@@ -462,7 +454,14 @@ const Demo = () => {
             }}
             rowHeaderRenderer={({rowIndex, style}) => {
               return (
-                <div style={style} className={classes.rowHeader}>
+                <div
+                  style={{
+                    ...style,
+                    boxSizing,
+                    borderBottom: border,
+                    borderLeft: border
+                  }}
+                >
                   {rowIndex + 1}
                 </div>
               )
@@ -472,7 +471,14 @@ const Demo = () => {
               const column = props.columns[columnIndex]
               const record = props.recordset[rowIndex]
               return (
-                <div style={style} className={classes.cell}>
+                <div
+                  style={{
+                    ...style,
+                    boxSizing,
+                    borderRight: border,
+                    borderBottom: border
+                  }}
+                >
                   {record[column.id]}
                 </div>
               )
@@ -484,6 +490,8 @@ const Demo = () => {
   )
 }
 
-ReactDOM.render(<Demo />, document.getElementById('app'))
+createRoot(document.getElementById('app')).render(
+  React.createElement(Demo)
+)
 
 module.hot.accept()

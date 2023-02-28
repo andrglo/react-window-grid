@@ -1,9 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
-import {terser} from 'rollup-plugin-terser'
 import babel from '@rollup/plugin-babel'
-import {sizeSnapshot} from 'rollup-plugin-size-snapshot'
 import replace from '@rollup/plugin-replace'
 
 export default [
@@ -17,17 +15,17 @@ export default [
     },
     plugins: [
       replace({
-        'process.env.NODE_ENV': JSON.stringify('production')
+        'process.env.NODE_ENV': JSON.stringify('production'),
+        preventAssignment: true
       }),
       resolve(),
       babel({
         exclude: ['node_modules/**'],
-        plugins: ['transform-react-remove-prop-types']
+        plugins: ['transform-react-remove-prop-types'],
+        babelHelpers: 'bundled'
       }),
       commonjs(),
       json(),
-      terser(),
-      sizeSnapshot(),
     ]
   },
   {
@@ -38,11 +36,13 @@ export default [
       replace({
         'process.env.NODE_ENV': JSON.stringify(
           process.env.NODE_ENV || 'development'
-        )
+        ),
+        preventAssignment: true
       }),
       resolve(),
       babel({
-        exclude: ['node_modules/**']
+        exclude: ['node_modules/**'],
+        babelHelpers: 'bundled'
       }),
       commonjs(),
       json()

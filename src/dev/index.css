@@ -1,0 +1,21 @@
+.DragHandle {
+  flex: 0 0 16px;
+  z-index: 2;
+  cursor: col-resize;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.DragHandleActive,
+.DragHandleActive:hover {
+  color: rgba(0, 0, 0, 0.8);
+  z-index: 3;
+}
+
+.DragHandleIcon {
+  flex: 0 0 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+}

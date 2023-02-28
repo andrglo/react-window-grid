@@ -1,16 +1,19 @@
-const webpack = require('webpack')
+const path = require('path')
+
+const sourceDir = path.join(__dirname, 'src/dev')
 
 module.exports = {
+  mode: 'development',
   entry: './src/dev/index.js',
   output: {
-    path: __dirname + '/src/dev',
+    path: sourceDir,
     publicPath: '/',
     filename: 'bundle.js'
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
-    contentBase: './src/dev',
-    hot: true
+    static: {
+      directory: sourceDir
+    }
   },
   module: {
     rules: [
@@ -20,6 +23,10 @@ module.exports = {
         use: {
           loader: 'babel-loader'
         }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       }
     ]
   }
