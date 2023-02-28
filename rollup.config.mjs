@@ -1,9 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
-import {terser} from 'rollup-plugin-terser'
 import babel from '@rollup/plugin-babel'
-import {sizeSnapshot} from 'rollup-plugin-size-snapshot'
 import replace from '@rollup/plugin-replace'
 
 export default [
@@ -28,8 +26,6 @@ export default [
       }),
       commonjs(),
       json(),
-      terser(),
-      sizeSnapshot(),
     ]
   },
   {
