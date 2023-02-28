@@ -4,7 +4,7 @@ jobs:
   test:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:18
+      - image: cimg/node:18.14.2
         environment:
           NODE_ENV: test
     steps:
@@ -35,7 +35,7 @@ jobs:
   publish:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:18
+      - image: cimg/node:18.14.2
     steps:
       - attach_workspace:
           at: ~/repo
