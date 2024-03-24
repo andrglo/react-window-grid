@@ -41,21 +41,21 @@ export const locales = [
 ]
 
 export const db = {
-  address: [
+  location: [
     'zipCode',
     'city',
-    'city_prefix',
-    'city_suffix',
+    // 'city_prefix',
+    // 'city_suffix',
     'street',
     'streetAddress',
-    'street_suffix',
+    // 'street_suffix',
     'street',
     'secondaryAddress',
     'county',
     'country',
     'countryCode',
     'state',
-    'stateAbbr',
+    'state({"abbreviated": true})',
     'latitude',
     'longitude'
   ],

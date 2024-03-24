@@ -20,7 +20,7 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 
-import {faker} from '@faker-js/faker'
+import {allFakers} from '@faker-js/faker'
 import {ReactWindowGrid} from '../..'
 import {db, locales} from './data'
 
@@ -210,7 +210,7 @@ const Demo = () => {
   const [numberOfRows, setNumberOfRows] = useState(100)
   const [columns, recordset] = useMemo(() => {
     console.log(`generating ${numberOfRows} records`, tableName)
-    faker.locale = locale
+    const faker = allFakers[locale]
     const columns = []
     for (const columnName of db[tableName]) {
       columns.push({
