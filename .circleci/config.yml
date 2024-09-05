@@ -12,22 +12,22 @@ jobs:
       - restore_cache:
           name: Restore NPM Package Cache
           keys:
-            - npm-packages-{{ checksum "package-lock.json" }}
+            - npm-packages-{{ checksum "pnpm-lock.yaml" }}
       - run:
           name: Install dependencies
           command: |
-            npm install
+            pnpm install
       - save_cache:
           name: Save NPM Package Cache
-          key: npm-packages-{{ checksum "package-lock.json" }}
+          key: npm-packages-{{ checksum "pnpm-lock.yaml" }}
           paths:
             - ~/.cache/npm
       - run:
           name: Tests
           command: |
-            npm run build
-            npm test
-            npm run test:report:coverage
+            pnpm run build
+            pnpm test
+            pnpm run test:report:coverage
       - persist_to_workspace:
           root: ~/repo
           paths: .
