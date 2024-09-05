@@ -60,7 +60,7 @@ export const db = {
     'longitude'
   ],
   commerce: [
-    'color',
+    // 'color',
     'department',
     'productName',
     'price',
@@ -69,16 +69,16 @@ export const db = {
     'product'
   ],
   company: [
-    'companyName',
-    'companySuffix',
+    'name',
+    // 'companySuffix',
     'catchPhrase',
-    'bs',
+    // 'bs',
     'catchPhraseAdjective',
     'catchPhraseDescriptor',
     'catchPhraseNoun',
-    'bsAdjective',
-    'bsBuzz',
-    'bsNoun'
+    'buzzAdjective',
+    // 'bsBuzz',
+    'buzzNoun'
   ],
   lorem: [
     'word',
@@ -92,26 +92,26 @@ export const db = {
     'lines'
   ],
   image: [
-    'image',
+    // 'image',
     'avatar',
-    'imageUrl',
-    'abstract',
-    'animals',
-    'business',
-    'cats',
-    'city',
-    'food',
-    'nightlife',
-    'fashion',
-    'people',
-    'nature',
-    'sports',
-    'technics',
-    'transport',
-    'dataUri'
+    // 'imageUrl',
+    // 'abstract',
+    // 'animals',
+    // 'business',
+    // 'cats',
+    // 'city',
+    // 'food',
+    // 'nightlife',
+    // 'fashion',
+    // 'people',
+    // 'nature',
+    // 'sports',
+    // 'technics',
+    // 'transport',
+    // 'dataUri'
   ],
   internet: [
-    'avatar',
+    // 'avatar',
     'email',
     'exampleEmail',
     'userName',

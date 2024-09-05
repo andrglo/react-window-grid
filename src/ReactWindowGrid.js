@@ -142,9 +142,9 @@ export const ReactWindowGrid = props => {
     scrollToTopOnNewRecordset,
     lineHeight,
     style,
-    columnHorizontalPadding,
-    columnVerticalPadding,
-    verticalPadding,
+    columnHorizontalPadding = 0,
+    columnVerticalPadding = 0,
+    verticalPadding = 0,
     ...rest
   } = props
 
@@ -385,8 +385,3 @@ ReactWindowGrid.propTypes = {
   scrollToTopOnNewRecordset: PropTypes.bool
 }
 
-ReactWindowGrid.defaultProps = {
-  columnHorizontalPadding: 0,
-  columnVerticalPadding: 0,
-  verticalPadding: 0
-}
