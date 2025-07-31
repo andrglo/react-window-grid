@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import {useTheme} from '@mui/material/styles'
+import {useTheme} from "@mui/material"
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
@@ -269,24 +269,33 @@ const Demo = () => {
       }}
     >
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h6" align="center">
             ReactWindowGrid demo
           </Typography>
         </Grid>
-        <Grid item xs={4} sm={2}>
+        <Grid size={{
+            xs: 4,
+            sm: 2
+          }}>
           <LocaleSelect
             value={locale}
             onChange={event => setLocale(event.target.value)}
           />
         </Grid>
-        <Grid item xs={5} sm={3}>
+        <Grid size={{
+            xs: 5,
+            sm: 3
+          }}>
           <TableSelect
             value={tableName}
             onChange={event => setTableName(event.target.value)}
           />
         </Grid>
-        <Grid item xs={3} sm={1}>
+        <Grid size={{
+            xs: 3,
+            sm: 1
+          }}>
           <TextField
             label="Rows"
             type="number"
@@ -296,7 +305,10 @@ const Demo = () => {
             }
           />
         </Grid>
-        <Grid item xs={4} sm={3}>
+        <Grid size={{
+            xs: 4,
+            sm: 3
+          }}>
           <TextField
             label="Row header width"
             type="number"
@@ -306,7 +318,10 @@ const Demo = () => {
             }
           />
         </Grid>
-        <Grid item xs={3} sm={2}>
+        <Grid size={{
+            xs: 3,
+            sm: 2
+          }}>
           <TextField
             label="Font size"
             type="number"
@@ -316,7 +331,7 @@ const Demo = () => {
             }
           />
         </Grid>
-        <Grid item xs={12} ref={panel}>
+        <Grid size={12} ref={panel}>
           <Typography variant="caption" align="center">
             Auto calculating column width and row
           </Typography>
@@ -335,9 +350,9 @@ const Demo = () => {
             rowHeaderWidth={rowHeaderWidth}
           />
         </Grid>
-        <Grid item xs={12} ref={panel}>
+        <Grid size={12} ref={panel}>
           <Typography variant="caption" align="center">
-            Controled column width and row with column resizing
+            Controlled column width and row with column resizing
           </Typography>
           <ReactWindowGrid
             style={{
@@ -376,6 +391,7 @@ const Demo = () => {
                     {column.label}
                   </Typography>
                   <Draggable
+                    nodeRef={panel}
                     axis="x"
                     defaultClassName="DragHandle"
                     defaultClassNameDragging="DragHandleActive"
@@ -394,24 +410,33 @@ const Demo = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h6" align="center">
             ReactWindowGrid tests
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{
+          xs: 12,
+          sm: 4
+        }}>
           <Typography variant="caption" align="center">
             {tests[0][0]}
           </Typography>
           <ReactWindowGrid {...tests[0][1]} />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{
+          xs: 12,
+          sm: 4
+        }}>
           <Typography variant="caption" align="center">
             {tests[1][0]}
           </Typography>
           <ReactWindowGrid {...tests[1][1]} />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid size={{
+          xs: 12,
+          sm: 4
+        }}>
           <Typography variant="caption" align="center">
             {tests[2][0]}
           </Typography>
