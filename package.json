@@ -88,6 +88,9 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "form-data": "^2.5.4"
+    }
   }
 }
